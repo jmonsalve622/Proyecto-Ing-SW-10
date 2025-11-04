@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ing_sw_10/utils/logic.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -7,11 +8,9 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-
-
-
-
 class _HomePageState extends State<HomePage> {
+  List<Report> reportList = List.empty(growable: true);
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +18,14 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.blue,
         foregroundColor: Colors.black,
         title: Text("Hola Mundo!"),
-        actions: [ElevatedButton(onPressed: () {}, child: Text("Publicar"))],
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+
+            }, 
+            child: Text("Publicar")
+            )
+            ],
       ),
 
     );

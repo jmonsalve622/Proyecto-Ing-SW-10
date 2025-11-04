@@ -51,7 +51,12 @@ class _CreateReportPageState extends State<CreateReportPage> {
               Spacer(),
               Padding(
                 padding: const EdgeInsets.all(15),
-                child: ElevatedButton(onPressed: () {}, child: Text("Publicar Reporte")),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }, 
+                  child: Text("Publicar Reporte")
+                  ),
               )
         ],
         )
