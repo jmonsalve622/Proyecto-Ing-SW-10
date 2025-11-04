@@ -7,11 +7,21 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+
+
+
+
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.black,
+        title: Text("Hola Mundo!"),
+        actions: [ElevatedButton(onPressed: () {}, child: Text("Publicar"))],
+      ),
+
     );
   }
 }
