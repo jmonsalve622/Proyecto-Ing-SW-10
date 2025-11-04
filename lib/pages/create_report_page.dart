@@ -23,7 +23,8 @@ class _CreateReportPageState extends State<CreateReportPage> {
             child: TextField(
               decoration: InputDecoration(
                 hintText: "Introduce el nombre del objeto",
-                border: OutlineInputBorder()
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.emoji_objects)
               ),
             ),
           ),
