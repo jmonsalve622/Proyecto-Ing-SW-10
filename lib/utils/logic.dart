@@ -74,10 +74,15 @@ class Report {
 //Clase manejadora de reportes en memoria, este crea una lista donde guardar la info de las publicaciones,
 //al cerrar la aplicacion, toda info de reportes hechos anteriormente, seran eliminadas.
 class ReportManager {
+  static int idCount = 0;
   static final List<Report> _reports = [];
 
   //Obtener todos los reportes
   static List<Report> get reports => _reports;
+
+  static int incrementCount () {
+    return idCount++;
+  }
 
   //Agregar un reporte
   static void addReport(Report report) {

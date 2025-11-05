@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ing_sw_10/pages/create_report_page.dart';
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,9 +22,9 @@ class _HomePageState extends State<HomePage> {
         actions: [
           ElevatedButton(
             onPressed: () {
-
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReportPage()));
             }, 
-            child: Text("Publicar")
+            child: Icon(Icons.add)//Text("Publicar")
             )
             ],
       ),

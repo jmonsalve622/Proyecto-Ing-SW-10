@@ -12,7 +12,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-      home: CreateReportPage()  //HomePage()
+      home: HomePage() //CreateReportPage()  
       );
   }
 }
