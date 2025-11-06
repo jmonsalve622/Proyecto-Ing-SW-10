@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_ing_sw_10/pages/create_report_page.dart';
 import 'package:proyecto_ing_sw_10/pages/home_page.dart';
 
 void main() {
@@ -12,7 +11,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-      home: HomePage() //CreateReportPage()  
-      );
+      debugShowCheckedModeBanner: false,
+      home: HomePage(), //CreateReportPage()
+    );
   }
 }

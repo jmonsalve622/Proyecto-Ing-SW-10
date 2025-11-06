@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ing_sw_10/pages/report_page.dart';
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
+import 'package:intl/intl.dart';
 
 /// Clase para crear un botón de un reporte,
 /// donde al presionarlo, llevara a la vista completa del reporte
@@ -40,29 +42,78 @@ class BuildBotonReporte extends StatelessWidget {
         alignment: Alignment.center,
         //padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
+      // Lo que va a mostrar el boton de reporte
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        // Lo que va a mostrar el boton de reporte
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            reportInstance.title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+          // Ocupar Top
+          SizedBox(),
+
+          // Ocupar Centro
+          FittedBox(
+            fit: BoxFit.scaleDown,
+
+            child: Text.rich(
+              TextSpan(
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.black38,
+                  fontWeight: FontWeight.bold,
+                ),
+                children: [
+                  TextSpan(
+                    text: 'Reporte: "',
+                  ),
+                  TextSpan(
+                    text: reportInstance.title,
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextSpan(text: '"'),
+                ],
+              ),
             ),
-            overflow: TextOverflow.ellipsis,
           ),
 
-          const SizedBox(height: 4),
+          // Ocupar Bottom
+          Column(
+            children: [
+              Text(
+                "Fecha de publicación:",
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.black38,
+                ),
+              ),
+              Text(
+                DateFormat('dd/MM/yyyy').format(reportInstance.dateReported),
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+              ),
 
-          Text(
-            reportInstance.ubication,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.black54,
-            ),
-            overflow: TextOverflow.ellipsis,
+              const SizedBox(height: 4),
+
+              Text(
+                "Publicado por:",
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.black38,
+                ),
+              ),
+              Text(
+                reportInstance.userId,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+              ),
+
+              const SizedBox(height: 12),
+            ],
           ),
         ],
       ),
@@ -103,6 +154,12 @@ class BuildReportesGrid extends StatelessWidget {
         return BuildBotonReporte(
           reportInstance: report,
           onReportPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ReportPage(report: report),
+              ),
+            );
             print("Ingresando a reporte: ${report.title}");
           },
         );
@@ -126,8 +183,9 @@ class ListaReportesScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Reportes actuales"),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.black,
       ),
-      //backgroundColor: Colors.grey,
 
       body: reportesActuales.isEmpty
           ? const Center(
