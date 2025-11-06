@@ -18,6 +18,9 @@ class _CreateReportPageState extends State<CreateReportPage> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final List<String> categoryOptions = ["Estudio", "Tecnología", "Personal", "Higene", "Ropa", "Deportivo", "Otros"];
+  final TextEditingController _stateController = TextEditingController();
+  //final List<String> stateOptions = ["Encontrado", "Perdido"];
+
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _userEmailController = TextEditingController();
   final TextEditingController _userPhoneController = TextEditingController();
@@ -36,7 +39,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
       body: Column(
         children: [
         const Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(8),
           child: Text("Información del reporte",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
         ),
@@ -123,8 +126,53 @@ class _CreateReportPageState extends State<CreateReportPage> {
             },
           )
         ),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: Container(
+            decoration: BoxDecoration(
+              border: BoxBorder.all()
+              //borderRadius: 
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text("Estado", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Radio(
+                      value: "Encontrado",
+                      // ignore: deprecated_member_use
+                      groupValue: _stateController.text,
+                      onChanged: (value) {
+                        setState(() {
+                          _stateController.text = value!;
+                        });
+                      },
+                    ),
+                    Text("Encontrado")
+                  ]),
+                  Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Radio(
+                      value: "Perdido",
+                      // ignore: deprecated_member_use
+                      groupValue: _stateController.text,
+                      onChanged: (value) {
+                        setState(() {
+                          _stateController.text = value!;
+                        });
+                      },
+                    ),
+                    Text("Perdido")
+                  ])
+              ]
+              ),
+          )
+        ),
         const Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(8),
           child: Text("Información de contacto",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
         ),
@@ -166,7 +214,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
         ),
         const Spacer(),
         Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(15),
           child: SizedBox(
             width: 250,
             height: 50,
