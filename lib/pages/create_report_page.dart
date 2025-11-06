@@ -15,7 +15,12 @@ class _CreateReportPageState extends State<CreateReportPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _ubicationController = TextEditingController();
-  final TextEditingController _fechaController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
+  final List<String> categoryOptions = ["Estudio", "Tecnología", "Personal", "Higene", "Ropa", "Deportivo", "Otros"];
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _userEmailController = TextEditingController();
+  final TextEditingController _userPhoneController = TextEditingController();
 
   DateTime? pickedDate;
 
@@ -28,7 +33,8 @@ class _CreateReportPageState extends State<CreateReportPage> {
         title: const Text("Formulario Reporte",
             style: TextStyle(fontWeight: FontWeight.w500)),
       ),
-      body: Column(children: [
+      body: Column(
+        children: [
         const Padding(
           padding: EdgeInsets.all(10),
           child: Text("Información del reporte",
@@ -73,7 +79,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
         Padding(
           padding: const EdgeInsets.all(8),
           child: TextField(
-            controller: _fechaController,
+            controller: _dateController,
             readOnly: true,
             decoration: const InputDecoration(
               labelText: 'Fecha',
@@ -89,10 +95,73 @@ class _CreateReportPageState extends State<CreateReportPage> {
                 lastDate: DateTime(2100),
               );
               if (pickedDate != null) {
-                _fechaController.text =
+                _dateController.text =
                     "${pickedDate!.day}/${pickedDate!.month}/${pickedDate!.year}";
               }
             },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: DropdownButtonFormField<String>(
+            decoration: InputDecoration(
+            labelText: "Categoría",
+            border: OutlineInputBorder(),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            ),
+            hint: Text("Categoría"),
+            initialValue: _categoryController.text.isEmpty ? null : _categoryController.text,
+            items: categoryOptions.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+            );}).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                _categoryController.text = newValue!;
+              });
+            },
+          )
+        ),
+        const Padding(
+          padding: EdgeInsets.all(10),
+          child: Text("Información de contacto",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: TextField(
+            controller: _userNameController,
+            decoration: const InputDecoration(
+              labelText: "Nombre de usuario",
+              hintText: "Ingrese su nombre de usuario",
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.person),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: TextField(
+            controller: _userEmailController,
+            decoration: const InputDecoration(
+              labelText: "Correo de usuario",
+              hintText: "Ingrese su correo institucional",
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.email),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: TextField(
+            controller: _userPhoneController,
+            decoration: const InputDecoration(
+              labelText: "Teléfono de usuario",
+              hintText: "Ingrese su teléfono de contacto",
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.phone),
+            ),
           ),
         ),
         const Spacer(),
@@ -114,7 +183,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
                   title: _titleController.text,
                   description: _descriptionController.text,
                   ubication: _ubicationController.text,
-                  category: "General",
+                  category: _categoryController.text,
                   dateReported: DateTime.now(),
                   userId: "user123", //Usuario de prueba
                   notas: "",
@@ -140,7 +209,8 @@ class _CreateReportPageState extends State<CreateReportPage> {
               ),
             ),
           ),
-        )
+        ),
+        const Spacer()
       ]),
     );
   }
