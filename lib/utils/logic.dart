@@ -52,6 +52,9 @@ class Report {
   final DateTime dateReported;
   final String userId;
   final String notas;
+  final String userName;
+  final String userEmail;
+  final String userPhone;
 
   Report({
     required this.id,
@@ -63,6 +66,9 @@ class Report {
     required this.dateReported,
     required this.userId,
     required this.notas,
+    required this.userName,
+    required this.userEmail,
+    required this.userPhone,
   });
 
     @override

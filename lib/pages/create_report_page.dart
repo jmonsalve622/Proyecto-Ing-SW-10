@@ -187,6 +187,9 @@ class _CreateReportPageState extends State<CreateReportPage> {
                   dateReported: DateTime.now(),
                   userId: "user123", //Usuario de prueba
                   notas: "",
+                  userName: _userNameController.text,
+                  userEmail: _userEmailController.text,
+                  userPhone: _userPhoneController.text,
                 );
 
                 ReportManager.addReport(newReport);

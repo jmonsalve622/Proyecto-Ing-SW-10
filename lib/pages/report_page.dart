@@ -87,6 +87,30 @@ class _ReportPageState extends State<ReportPage> {
                 title: "Notas adicionales",
                 content: widget.report.notas,
               ),
+
+              const Divider(height: 30, thickness: 1),
+
+              const Text(
+                "Información de Contacto",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
+
+              _buildDetailRow(
+                icon: Icons.person_outline,
+                title: "Publicado por",
+                content: widget.report.userName,
+              ),
+              _buildDetailRow(
+                icon: Icons.email_outlined,
+                title: "Email de Contacto",
+                content: widget.report.userEmail,
+              ),
+              _buildDetailRow(
+                icon: Icons.phone_outlined,
+                title: "Teléfono de Contacto",
+                content: widget.report.userPhone,
+              ),
             ],
           ),
         ),
@@ -96,6 +120,7 @@ class _ReportPageState extends State<ReportPage> {
 
   Widget _buildDetailRow({required IconData icon, required String title, required String content}) {
     if (content.isEmpty) {
+      // Si el contenido está vacío, no muestra nada.
       return const SizedBox.shrink(); 
     }
     
