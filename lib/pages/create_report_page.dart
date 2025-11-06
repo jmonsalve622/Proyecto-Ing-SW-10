@@ -21,6 +21,8 @@ class _CreateReportPageState extends State<CreateReportPage> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _userEmailController = TextEditingController();
   final TextEditingController _userPhoneController = TextEditingController();
+  final TextEditingController _notasController = TextEditingController();
+
 
   DateTime? pickedDate;
 
@@ -56,12 +58,30 @@ class _CreateReportPageState extends State<CreateReportPage> {
           padding: const EdgeInsets.all(8),
           child: TextField(
             controller: _descriptionController,
+            maxLines: null,
             decoration: const InputDecoration(
               labelText: "Descripción",
-              hintText: "Ingrese la descripción del objeto",
+              hintText: "Ingrese la descripción del objeto (máx. 100 palabras)",
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.notes),
             ),
+            onChanged: (value) {
+              final words = value.trim().split(RegExp(r'\s+'));
+              if (words.length > 100) {
+                final trimmed = words.sublist(0, 100).join(' ');
+                _descriptionController.text = trimmed;
+                _descriptionController.selection = TextSelection.fromPosition(
+                  TextPosition(offset: trimmed.length),
+                );
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Máximo 100 palabras alcanzado"),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              }
+            },
           ),
         ),
         Padding(
@@ -69,7 +89,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
           child: TextField(
             controller: _ubicationController,
             decoration: const InputDecoration(
-              labelText: "Ubicación",
+              labelText: "Ubicación del objeto perdido",
               hintText: "Ingrese la ubicación del objeto",
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.place),
@@ -82,7 +102,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
             controller: _dateController,
             readOnly: true,
             decoration: const InputDecoration(
-              labelText: 'Fecha',
+              labelText: 'Fecha de perdida',
               hintText: "dd/mm/aaaa",
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.calendar_month),
@@ -123,6 +143,37 @@ class _CreateReportPageState extends State<CreateReportPage> {
             },
           )
         ),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: TextField(
+            controller: _notasController,
+            maxLines: 3,
+            decoration: const InputDecoration(
+              labelText: "Notas adicionales",
+              hintText: "Información extra sobre el objeto o contacto (máx. 30 palabras)",
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.notes_outlined),
+            ),
+            onChanged: (value) {
+              final words = value.trim().split(RegExp(r'\s+'));
+              if (words.length > 30) {
+                final trimmed = words.sublist(0, 30).join(' ');
+                _notasController.text = trimmed;
+                _notasController.selection = TextSelection.fromPosition(
+                  TextPosition(offset: trimmed.length),
+                );
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Máximo 30 palabras alcanzado"),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              }
+            },
+          ),
+        ),
+
         const Padding(
           padding: EdgeInsets.all(10),
           child: Text("Información de contacto",
@@ -185,17 +236,18 @@ class _CreateReportPageState extends State<CreateReportPage> {
                   ubication: _ubicationController.text,
                   category: _categoryController.text,
                   dateReported: DateTime.now(),
-                  userId: "user123", //Usuario de prueba
-                  notas: "",
+                  notas: _notasController.text,
                   userName: _userNameController.text,
                   userEmail: _userEmailController.text,
                   userPhone: _userPhoneController.text,
+                  userId: _userEmailController.text.trim(),
                 );
+
 
                 ReportManager.addReport(newReport);
                 print("Reporte creado: $newReport");                                  //Prints que demuestran que si se guardan
                 print("Total reportes en memoria: ${ReportManager.reports.length}");  //los reportes con los datos escritos
-
+                                                                                      //los resultados se muestran en la consola
 
                 Navigator.pop(context, newReport);
               },

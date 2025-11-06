@@ -69,7 +69,7 @@ class _ReportPageState extends State<ReportPage> {
 
               _buildDetailRow(
                 icon: Icons.place_outlined,
-                title: "Ubicación",
+                title: "Ubicación de perdida",
                 content: widget.report.ubication,
               ),
               _buildDetailRow(
@@ -81,6 +81,11 @@ class _ReportPageState extends State<ReportPage> {
                 icon: Icons.calendar_today_outlined,
                 title: "Fecha del Reporte",
                 content: "${widget.report.dateReported.day}/${widget.report.dateReported.month}/${widget.report.dateReported.year}",
+              ),
+              _buildDetailRow(
+                icon: Icons.event_busy_outlined,
+                title: "Fecha en que se perdió",
+                content: "${widget.report.object.dateLost.day}/${widget.report.object.dateLost.month}/${widget.report.object.dateLost.year}",
               ),
               _buildDetailRow(
                 icon: Icons.notes_outlined,
