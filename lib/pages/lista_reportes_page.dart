@@ -38,47 +38,48 @@ class BuildBotonReporte extends StatelessWidget {
           width: anchoBorde,
         ),
 
-        minimumSize: const Size(0, height),
+        minimumSize: const Size(double.infinity, height),
         alignment: Alignment.center,
-        //padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
       // Lo que va a mostrar el boton de reporte
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           // Ocupar Top
-          SizedBox(),
+          const SizedBox(height: 10),
 
-          // Ocupar Centro
-          FittedBox(
-            fit: BoxFit.scaleDown,
-
-            child: Text.rich(
-              TextSpan(
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.black38,
-                  fontWeight: FontWeight.bold,
-                ),
-                children: [
-                  TextSpan(
-                    text: 'Reporte: "',
+          Center(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text.rich(
+                TextSpan(
+                  style: const TextStyle(
+                    fontSize: 20,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.bold,
                   ),
-                  TextSpan(
-                    text: reportInstance.title,
-                    style: const TextStyle(
-                      color: Colors.black,
+                  children: [
+                    TextSpan(
+                      text: 'Reporte: "',
                     ),
-                  ),
-                  TextSpan(text: '"'),
-                ],
+                    TextSpan(
+                      text: reportInstance.title,
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    TextSpan(text: '"'),
+                  ],
+                ),
               ),
             ),
           ),
 
           // Ocupar Bottom
           Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+
             children: [
               Text(
                 "Tipo de reporte: ${reportInstance.state}",
@@ -89,35 +90,44 @@ class BuildBotonReporte extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              Text(
-                "Fecha de publicación:",
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.black38,
-                ),
-              ),
-              Text(
-                DateFormat('dd/MM/yyyy').format(reportInstance.dateReported),
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
+              Text.rich(
+                TextSpan(
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black38,
+                  ),
+                  children: [
+                    TextSpan(text: "Fecha de publicación: "),
+                    TextSpan(
+                      text: DateFormat('dd/MM/yyyy').format(reportInstance.dateReported),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal, // El valor no es bold
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
               const SizedBox(height: 4),
 
-              Text(
-                "Publicado por:",
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.black38,
-                ),
-              ),
-              Text(
-                reportInstance.userId,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
+              Text.rich(
+                TextSpan(
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black38,
+                  ),
+                  children: [
+                    TextSpan(text: "Publicado por: "), // Etiqueta más corta
+                    TextSpan(
+                      text: reportInstance.userId,
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
@@ -142,11 +152,33 @@ class BuildReportesGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const int maxColumnas = 4;
     const double margenY = 20;
-    const double margenX = 10;
     const EdgeInsets paddingGrid = EdgeInsets.all(20);
 
+    return ListView.builder(
+      padding: paddingGrid,
+      itemCount: reportes.length,
+      itemBuilder: (BuildContext context, int index) {
+        final Report report = reportes[index];
+
+        return Padding(
+          padding: EdgeInsets.only(bottom: margenY),
+          child: BuildBotonReporte(
+            reportInstance: report,
+            onReportPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ReportPage(report: report),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+
+    /*
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: maxColumnas,
@@ -174,6 +206,8 @@ class BuildReportesGrid extends StatelessWidget {
         );
       },
     );
+
+     */
   }
 
 }
