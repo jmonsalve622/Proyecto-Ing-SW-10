@@ -55,6 +55,8 @@ class Report {
   final String userName;
   final String userEmail;
   final String userPhone;
+  final String state;
+
 
   Report({
     required this.id,
@@ -69,6 +71,7 @@ class Report {
     required this.userName,
     required this.userEmail,
     required this.userPhone,
+    required this.state,
   });
 
     @override

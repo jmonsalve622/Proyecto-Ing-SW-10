@@ -19,8 +19,6 @@ class _CreateReportPageState extends State<CreateReportPage> {
   final TextEditingController _categoryController = TextEditingController();
   final List<String> categoryOptions = ["Estudio", "Tecnología", "Personal", "Higene", "Ropa", "Deportivo", "Otros"];
   final TextEditingController _stateController = TextEditingController();
-  //final List<String> stateOptions = ["Encontrado", "Perdido"];
-
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _userEmailController = TextEditingController();
   final TextEditingController _userPhoneController = TextEditingController();
@@ -92,7 +90,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
           child: TextField(
             controller: _ubicationController,
             decoration: const InputDecoration(
-              labelText: "Ubicación del objeto perdido",
+              labelText: "Ubicación del objeto",
               hintText: "Ingrese la ubicación del objeto",
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.place),
@@ -105,7 +103,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
             controller: _dateController,
             readOnly: true,
             decoration: const InputDecoration(
-              labelText: 'Fecha de perdida',
+              labelText: 'Fecha',
               hintText: "dd/mm/aaaa",
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.calendar_month),
@@ -148,37 +146,6 @@ class _CreateReportPageState extends State<CreateReportPage> {
         ),
         Padding(
           padding: const EdgeInsets.all(8),
-<<<<<<< HEAD
-          child: TextField(
-            controller: _notasController,
-            maxLines: 3,
-            decoration: const InputDecoration(
-              labelText: "Notas adicionales",
-              hintText: "Información extra sobre el objeto o contacto (máx. 30 palabras)",
-              border: OutlineInputBorder(),
-              prefixIcon: Icon(Icons.notes_outlined),
-            ),
-            onChanged: (value) {
-              final words = value.trim().split(RegExp(r'\s+'));
-              if (words.length > 30) {
-                final trimmed = words.sublist(0, 30).join(' ');
-                _notasController.text = trimmed;
-                _notasController.selection = TextSelection.fromPosition(
-                  TextPosition(offset: trimmed.length),
-                );
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Máximo 30 palabras alcanzado"),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-              }
-            },
-          ),
-        ),
-
-=======
           child: Container(
             decoration: BoxDecoration(
               border: BoxBorder.all()
@@ -222,7 +189,37 @@ class _CreateReportPageState extends State<CreateReportPage> {
               ),
           )
         ),
->>>>>>> 0162d9c29a5b07db21c7f5bfc32000035324b0a4
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: TextField(
+            controller: _notasController,
+            maxLines: 3,
+            decoration: const InputDecoration(
+              labelText: "Notas adicionales",
+              hintText: "Información extra sobre el objeto o contacto (máx. 30 palabras)",
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.notes_outlined),
+            ),
+            onChanged: (value) {
+              final words = value.trim().split(RegExp(r'\s+'));
+              if (words.length > 30) {
+                final trimmed = words.sublist(0, 30).join(' ');
+                _notasController.text = trimmed;
+                _notasController.selection = TextSelection.fromPosition(
+                  TextPosition(offset: trimmed.length),
+                );
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Máximo 30 palabras alcanzado"),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              }
+            },
+          ),
+        ),
+
         const Padding(
           padding: EdgeInsets.all(8),
           child: Text("Información de contacto",
@@ -284,6 +281,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
                   description: _descriptionController.text,
                   ubication: _ubicationController.text,
                   category: _categoryController.text,
+                  state: _stateController.text,
                   dateReported: DateTime.now(),
                   notas: _notasController.text,
                   userName: _userNameController.text,

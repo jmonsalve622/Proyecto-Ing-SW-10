@@ -81,6 +81,15 @@ class BuildBotonReporte extends StatelessWidget {
           Column(
             children: [
               Text(
+                "Tipo de reporte: ${reportInstance.state}",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: reportInstance.state == "Encontrado" ? Colors.green : Colors.red,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
                 "Fecha de publicación:",
                 style: const TextStyle(
                   fontSize: 20,
