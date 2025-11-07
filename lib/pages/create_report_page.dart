@@ -273,6 +273,61 @@ class _CreateReportPageState extends State<CreateReportPage> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
+                    if (_titleController.text.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("El título no puede estar vacío")),
+                    );
+                    return;
+                  }
+                  if (_descriptionController.text.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("La descripción no puede estar vacía")),
+                    );
+                    return;
+                  }
+                  if (_ubicationController.text.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Escriba la ubicacion donde Perdio/Encontro el objeto")),
+                    );
+                    return;
+                  }
+                  if (_dateController.text.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Eliga la fecha de cuando Perdio/Encontro el objeto")),
+                    );
+                    return;
+                  }
+                  if (_categoryController.text.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Debe seleccionar una categoría")),
+                    );
+                    return;
+                  }
+                  if (_stateController.text.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Debe seleccionar si el objeto está Perdido o Encontrado")),
+                    );
+                    return;
+                  }
+                  if (_userNameController.text.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("El nombre de usuario no puede estar vacío")),
+                    );
+                    return;
+                  }
+                  if (_userEmailController.text.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Ingrese un correo válido")),
+                    );
+                    return;
+                  }
+                  if (_userPhoneController.text.trim().isEmpty || !_userPhoneController.text.trim().contains(RegExp(r'^[0-9]+$'))) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("El teléfono debe contener números")),
+                    );
+                    return;
+                  }
+                  
                   final newReport = Report(
                     id: DateTime.now().millisecondsSinceEpoch.toString(),
                     object: LostObject(
