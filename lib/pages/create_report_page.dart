@@ -32,9 +32,10 @@ class _CreateReportPageState extends State<CreateReportPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.white,
         title: const Text("Formulario Reporte",
-            style: TextStyle(fontWeight: FontWeight.w500)),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
