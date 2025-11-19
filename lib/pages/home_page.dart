@@ -16,17 +16,30 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
+        title: Text("Menú Principal", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
         backgroundColor: Colors.blue,
-        foregroundColor: Colors.black,
-        title: Text("Menú Principal"),
+        elevation: 1,
+        centerTitle: true,
       ),
       body: Center(
+        child:Container(
+          height: 200,
+          width: 200,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.blue,
+          ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Boton para crear reporte
             ElevatedButton(
-              child: const Text("Crear Reporte"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.blue,
+              ),
+              child: const Text("Crear Reporte",),
               onPressed: () async {
                 await Navigator.push(
                   context,
@@ -41,6 +54,10 @@ class _HomePageState extends State<HomePage> {
 
             // Boton para ver reportes
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.blue,
+              ),
               child: const Text("Ver Reportes"),
               onPressed: () {
                 Navigator.push(
@@ -54,6 +71,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ],
+        ),
         ),
       ),
     );

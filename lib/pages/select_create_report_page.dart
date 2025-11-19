@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_ing_sw_10/utils/logic.dart';
-import 'lista_reportes_page.dart';
 import 'create_found_object_report_page.dart';
 import 'create_lost_object_report_page.dart';
 

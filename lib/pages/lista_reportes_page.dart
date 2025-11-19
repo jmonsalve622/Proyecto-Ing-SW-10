@@ -225,15 +225,16 @@ class ListaReportesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Reportes actuales"),
+        title: const Text("Reportes actuales",style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        centerTitle: true,
         backgroundColor: Colors.blue,
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.white,
       ),
 
       body: reportesActuales.isEmpty
           ? const Center(
         child: Text("No hay reportes ingresados todavía.",
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.black),
         ),
       )
           : BuildReportesGrid(
