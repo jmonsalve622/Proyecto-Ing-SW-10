@@ -1,39 +1,34 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
 
-
-class CreateReportPage extends StatefulWidget {
-  const CreateReportPage({super.key});
+class CreateLostObjectReportPage extends StatefulWidget {
+  const CreateLostObjectReportPage({super.key});
 
   @override
-  State<CreateReportPage> createState() => _CreateReportPageState();
+  State<CreateLostObjectReportPage> createState() => _CreateLostObjectReportPageState();
 }
 
-class _CreateReportPageState extends State<CreateReportPage> {
+class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _ubicationController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
-  final List<String> categoryOptions = ["Estudio", "Tecnología", "Personal", "Higene", "Ropa", "Deportivo", "Otros"];
-  final TextEditingController _stateController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _userEmailController = TextEditingController();
   final TextEditingController _userPhoneController = TextEditingController();
   final TextEditingController _notasController = TextEditingController();
-
-
+  final List<String> categoryOptions = ["Estudio", "Tecnología", "Personal", "Higene", "Ropa", "Deportivo", "Otros"];
+  final String objectState = "Perdido";
   DateTime? pickedDate;
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
         foregroundColor: Colors.black,
-        title: const Text("Formulario Reporte",
+        title: const Text("Formulario Reporte Objeto Perdido",
             style: TextStyle(fontWeight: FontWeight.w500)),
       ),
       body: SingleChildScrollView(
@@ -148,51 +143,6 @@ class _CreateReportPageState extends State<CreateReportPage> {
           ),
           Padding(
             padding: const EdgeInsets.all(8),
-            child: Container(
-              decoration: BoxDecoration(
-                border: BoxBorder.all()
-                //borderRadius: 
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text("Estado", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Radio(
-                        value: "Encontrado",
-                        // ignore: deprecated_member_use
-                        groupValue: _stateController.text,
-                        onChanged: (value) {
-                          setState(() {
-                            _stateController.text = value!;
-                          });
-                        },
-                      ),
-                      Text("Encontrado")
-                    ]),
-                    Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Radio(
-                        value: "Perdido",
-                        // ignore: deprecated_member_use
-                        groupValue: _stateController.text,
-                        onChanged: (value) {
-                          setState(() {
-                            _stateController.text = value!;
-                          });
-                        },
-                      ),
-                      Text("Perdido")
-                    ])
-                ]
-                ),
-            )
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8),
             child: TextField(
               controller: _notasController,
               maxLines: 3,
@@ -303,12 +253,6 @@ class _CreateReportPageState extends State<CreateReportPage> {
                     );
                     return;
                   }
-                  if (_stateController.text.trim().isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Debe seleccionar si el objeto está Perdido o Encontrado")),
-                    );
-                    return;
-                  }
                   if (_userNameController.text.trim().isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("El nombre de usuario no puede estar vacío")),
@@ -340,7 +284,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
                     description: _descriptionController.text,
                     ubication: _ubicationController.text,
                     category: _categoryController.text,
-                    state: _stateController.text,
+                    state: objectState,
                     dateReported: DateTime.now(),
                     notas: _notasController.text,
                     userName: _userNameController.text,

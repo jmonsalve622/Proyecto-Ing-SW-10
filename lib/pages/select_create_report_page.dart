@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
 import 'lista_reportes_page.dart';
-import 'select_create_report_page.dart';
+import 'create_found_object_report_page.dart';
+import 'create_lost_object_report_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class SelectCreateReportPage extends StatefulWidget {
+  const SelectCreateReportPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<SelectCreateReportPage> createState() => _SelectCreateReportPageState();
 }
 
-class _HomePageState extends State<HomePage> {
-
+class _SelectCreateReportPageState extends State<SelectCreateReportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
         foregroundColor: Colors.black,
-        title: Text("Menú Principal"),
+        title: Text("Selecciona el tipo de reporte"),
       ),
       body: Center(
         child: Column(
@@ -26,12 +26,12 @@ class _HomePageState extends State<HomePage> {
           children: [
             // Boton para crear reporte
             ElevatedButton(
-              child: const Text("Crear Reporte"),
+              child: const Text("Reporte Objeto Encontrado"),
               onPressed: () async {
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SelectCreateReportPage(),
+                    builder: (context) => CreateFoundObjectReportPage(),
                   ),
                 );
               },
@@ -41,21 +41,19 @@ class _HomePageState extends State<HomePage> {
 
             // Boton para ver reportes
             ElevatedButton(
-              child: const Text("Ver Reportes"),
-              onPressed: () {
+              child: const Text("Reporte Objeto Perdido"),
+              onPressed: () async {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ListaReportesScreen(
-                      reportesActuales: ReportManager.reports,
-                    ),
-                  ),
+                    builder: (context) => CreateLostObjectReportPage(),
+                  )
                 );
               },
             ),
           ],
-        ),
-      ),
+        )
+        )
     );
   }
 }
