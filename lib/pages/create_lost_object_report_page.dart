@@ -84,7 +84,6 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
             ),
           ),
           
-          // --- CAMPO DE UBICACIÓN (Objeto Perdido) ---
           Padding(
             padding: const EdgeInsets.all(8),
             child: TextField(
@@ -102,7 +101,6 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
                   final LatLng loc = result['location'];
                   final double rad = result['radius'];
                   setState(() {
-                    // Guardamos Lat, Lng y Rad
                     _ubicationController.text = 
                         "Lat: ${loc.latitude.toStringAsFixed(5)}, Lng: ${loc.longitude.toStringAsFixed(5)}, Rad: ${rad.toStringAsFixed(1)}";
                   });
@@ -117,7 +115,6 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
               ),
             ),
           ),
-          // -------------------------------------------
 
           Padding(
             padding: const EdgeInsets.all(8),

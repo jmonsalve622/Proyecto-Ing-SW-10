@@ -17,7 +17,6 @@ class ReportPage extends StatefulWidget {
 
 class _ReportPageState extends State<ReportPage> {
   
-  // Extrae coordenadas y radio del string
   Map<String, dynamic>? _getLocationData(String ubication) {
     try {
       if (ubication.contains("Lat:") && ubication.contains("Lng:")) {
@@ -112,7 +111,6 @@ class _ReportPageState extends State<ReportPage> {
               ),
               const SizedBox(height: 10),
 
-              // --- MAPA VISUALIZADOR PEQUEÑO ---
               if (coordinates != null)
                 InkWell(
                   onTap: () {

@@ -17,12 +17,7 @@ class OsmMapPicker extends StatefulWidget {
 class _OsmMapPickerState extends State<OsmMapPicker> {
   static const LatLng _udecCenter = LatLng(-36.8295, -73.0360);
 
-  // --- CORRECCIÓN AQUÍ ---
-  // Creamos la llave UNA SOLA VEZ al iniciar la pantalla.
-  // Esto evita que el mapa se recargue al mover el slider, 
-  // pero sigue solucionando el problema del emulador al cerrar y abrir la página.
   final Key _mapKey = UniqueKey(); 
-  // -----------------------
 
   final LatLngBounds _cameraBounds = LatLngBounds(
     const LatLng(-36.8600, -73.0800), 
@@ -96,7 +91,6 @@ class _OsmMapPickerState extends State<OsmMapPicker> {
       body: Stack(
         children: [
           FlutterMap(
-            // Usamos la variable _mapKey en lugar de llamar a UniqueKey() directamente
             key: _mapKey, 
             options: MapOptions(
               initialCenter: _udecCenter,

@@ -84,7 +84,6 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
             ),
           ),
           
-          // --- CAMPO DE UBICACIÓN (Objeto Encontrado) ---
           Padding(
             padding: const EdgeInsets.all(8),
             child: TextField(
@@ -94,14 +93,13 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                 final result = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const OsmMapPicker(isLostObject: false), // Sin Círculo
+                    builder: (context) => const OsmMapPicker(isLostObject: false), 
                   ),
                 );
 
                 if (result != null && result is Map) {
                   final LatLng loc = result['location'];
                   setState(() {
-                    // Radio 0.0
                     _ubicationController.text = 
                         "Lat: ${loc.latitude.toStringAsFixed(5)}, Lng: ${loc.longitude.toStringAsFixed(5)}, Rad: 0.0";
                   });
@@ -116,7 +114,6 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
               ),
             ),
           ),
-          // ---------------------------------------------
 
           Padding(
             padding: const EdgeInsets.all(8),
