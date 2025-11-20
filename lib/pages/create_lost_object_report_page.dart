@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart'; 
+import 'osm_map_picker.dart'; 
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
 
 class CreateLostObjectReportPage extends StatefulWidget {
@@ -71,7 +73,6 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
                   _descriptionController.selection = TextSelection.fromPosition(
                     TextPosition(offset: trimmed.length),
                   );
-        
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text("Máximo 100 palabras alcanzado"),
@@ -82,18 +83,42 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
               },
             ),
           ),
+          
+          // --- CAMPO DE UBICACIÓN (Objeto Perdido) ---
           Padding(
             padding: const EdgeInsets.all(8),
             child: TextField(
               controller: _ubicationController,
+              readOnly: true,
+              onTap: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const OsmMapPicker(isLostObject: true), // Muestra Círculo
+                  ),
+                );
+
+                if (result != null && result is Map) {
+                  final LatLng loc = result['location'];
+                  final double rad = result['radius'];
+                  setState(() {
+                    // Guardamos Lat, Lng y Rad
+                    _ubicationController.text = 
+                        "Lat: ${loc.latitude.toStringAsFixed(5)}, Lng: ${loc.longitude.toStringAsFixed(5)}, Rad: ${rad.toStringAsFixed(1)}";
+                  });
+                }
+              },
               decoration: const InputDecoration(
                 labelText: "Ubicación del objeto",
-                hintText: "Ingrese la ubicación del objeto",
+                hintText: "Toque para seleccionar zona de pérdida",
                 border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.place),
+                prefixIcon: Icon(Icons.map_outlined),
+                suffixIcon: Icon(Icons.arrow_forward_ios, size: 16),
               ),
             ),
           ),
+          // -------------------------------------------
+
           Padding(
             padding: const EdgeInsets.all(8),
             child: TextField(
@@ -160,7 +185,6 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
                   _notasController.selection = TextSelection.fromPosition(
                     TextPosition(offset: trimmed.length),
                   );
-        
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text("Máximo 30 palabras alcanzado"),
@@ -292,13 +316,9 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
                     userPhone: _userPhoneController.text,
                     userId: _userEmailController.text.trim(),
                   );
-        
-        
                   ReportManager.addReport(newReport);
-                  print("Reporte creado: $newReport");                                  //Prints que demuestran que si se guardan
-                  print("Total reportes en memoria: ${ReportManager.reports.length}");  //los reportes con los datos escritos
-                                                                                        //los resultados se muestran en la consola
-        
+                  print("Reporte creado: $newReport");                                  
+                  print("Total reportes en memoria: ${ReportManager.reports.length}");  
                   Navigator.pop(context, newReport);
                 },
                 child: const Row(

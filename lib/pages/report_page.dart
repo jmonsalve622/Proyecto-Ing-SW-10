@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
 
 class ReportPage extends StatefulWidget {
@@ -14,10 +16,43 @@ class ReportPage extends StatefulWidget {
 }
 
 class _ReportPageState extends State<ReportPage> {
+  
+  // Extrae coordenadas y radio del string
+  Map<String, dynamic>? _getLocationData(String ubication) {
+    try {
+      if (ubication.contains("Lat:") && ubication.contains("Lng:")) {
+        final parts = ubication.split(',');
+        
+        final latString = parts[0].split(':')[1].trim();
+        final lat = double.parse(latString);
+        
+        final lngString = parts[1].split(':')[1].trim();
+        final lng = double.parse(lngString);
+
+        double radius = 0.0;
+        if (parts.length > 2 && parts[2].contains("Rad:")) {
+           final radString = parts[2].split(':')[1].trim();
+           radius = double.parse(radString);
+        }
+
+        return {
+          'coordinates': LatLng(lat, lng),
+          'radius': radius,
+        };
+      }
+    } catch (e) {
+      return null;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final locationData = _getLocationData(widget.report.ubication);
+    final LatLng? coordinates = locationData?['coordinates'];
+    final double radius = locationData?['radius'] ?? 0.0;
+
     return Scaffold(
-      
       appBar: AppBar(
         title: Text(widget.report.title),
         backgroundColor: Colors.blue,
@@ -68,11 +103,109 @@ class _ReportPageState extends State<ReportPage> {
               
               const Divider(height: 30, thickness: 1),
 
-              _buildDetailRow(
-                icon: Icons.place_outlined,
-                title: "Ubicación de perdida",
-                content: widget.report.ubication,
+              const Row(
+                children: [
+                   Icon(Icons.place_outlined, color: Colors.blue, size: 28),
+                   SizedBox(width: 12),
+                   Text("Ubicación:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                ],
               ),
+              const SizedBox(height: 10),
+
+              // --- MAPA VISUALIZADOR PEQUEÑO ---
+              if (coordinates != null)
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FullMapScreen(
+                          location: coordinates,
+                          radius: radius, 
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: 200,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Stack(
+                        children: [
+                          FlutterMap(
+                            options: MapOptions(
+                              initialCenter: coordinates,
+                              initialZoom: 16.5,
+                              interactionOptions: const InteractionOptions(
+                                flags: InteractiveFlag.none, 
+                              ),
+                            ),
+                            children: [
+                              TileLayer(
+                                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                userAgentPackageName: 'com.proyecto.ing_sw_10',
+                              ),
+                              if (radius > 0)
+                                CircleLayer(
+                                  circles: [
+                                    CircleMarker(
+                                      point: coordinates,
+                                      color: Colors.purple.withOpacity(0.3),
+                                      borderColor: Colors.purple,
+                                      borderStrokeWidth: 2,
+                                      useRadiusInMeter: true,
+                                      radius: radius,
+                                    ),
+                                  ],
+                                ),
+                              MarkerLayer(
+                                markers: [
+                                  Marker(
+                                    point: coordinates,
+                                    width: 50,
+                                    height: 50,
+                                    child: const Icon(
+                                      Icons.location_on,
+                                      color: Colors.red,
+                                      size: 40,
+                                    ),
+                                    alignment: Alignment.topCenter,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Positioned(
+                            bottom: 8,
+                            right: 8,
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.8),
+                                shape: BoxShape.circle,
+                                boxShadow: const [BoxShadow(blurRadius: 4, color: Colors.black26)],
+                              ),
+                              child: const Icon(Icons.fullscreen, size: 28, color: Colors.blue),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              else
+                Padding(
+                  padding: const EdgeInsets.only(left: 40),
+                  child: Text(widget.report.ubication, style: const TextStyle(fontSize: 16)),
+                ),
+
+              const SizedBox(height: 10),
+              
               _buildDetailRow(
                 icon: Icons.category_outlined,
                 title: "Categoría",
@@ -85,7 +218,7 @@ class _ReportPageState extends State<ReportPage> {
               ),
               _buildDetailRow(
                 icon: Icons.event_busy_outlined,
-                title: "Fecha en que se perdió",
+                title: "Fecha incidente",
                 content: "${widget.report.object.dateLost.day}/${widget.report.object.dateLost.month}/${widget.report.object.dateLost.year}",
               ),
               _buildDetailRow(
@@ -125,11 +258,7 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Widget _buildDetailRow({required IconData icon, required String title, required String content}) {
-    if (content.isEmpty) {
-      // Si el contenido está vacío, no muestra nada.
-      return const SizedBox.shrink(); 
-    }
-    
+    if (content.isEmpty) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -141,17 +270,82 @@ class _ReportPageState extends State<ReportPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
+                Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
-                Text(
-                  content,
-                  style: const TextStyle(fontSize: 16),
+                Text(content, style: const TextStyle(fontSize: 16)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// --- PANTALLA DE MAPA COMPLETO ---
+class FullMapScreen extends StatelessWidget {
+  final LatLng location;
+  final double radius;
+
+  const FullMapScreen({
+    super.key, 
+    required this.location,
+    this.radius = 0.0,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Ubicación exacta"),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+      ),
+      body: FlutterMap(
+        options: MapOptions(
+          initialCenter: location,
+          initialZoom: 18.0, 
+          interactionOptions: const InteractionOptions(
+            flags: InteractiveFlag.none, 
+          ),
+        ),
+        children: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'com.proyecto.ing_sw_10',
+          ),
+          if (radius > 0)
+            CircleLayer(
+              circles: [
+                CircleMarker(
+                  point: location,
+                  color: Colors.purple.withOpacity(0.3),
+                  borderColor: Colors.purple,
+                  borderStrokeWidth: 2,
+                  useRadiusInMeter: true,
+                  radius: radius,
                 ),
               ],
             ),
+          MarkerLayer(
+            markers: [
+              Marker(
+                point: location,
+                width: 80,
+                height: 80,
+                child: const Icon(
+                  Icons.location_on,
+                  color: Colors.red,
+                  size: 60,
+                ),
+                alignment: Alignment.topCenter,
+              ),
+            ],
+          ),
+          const RichAttributionWidget(
+            attributions: [
+              TextSourceAttribution('OpenStreetMap contributors'),
+            ],
           ),
         ],
       ),
