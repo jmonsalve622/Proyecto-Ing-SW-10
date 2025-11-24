@@ -3,12 +3,52 @@ import 'package:proyecto_ing_sw_10/pages/home_page.dart';
 import 'package:proyecto_ing_sw_10/utils/mock_data.dart';
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
 
-/// Al abrir el sistema se puede seleccionar entre Usuario o Admistrador.
-/// Se puede escribir el nombre de Usuario y la contraseña.
-/// Se realiza el login exitosamente.
-
 // flutter run -t lib/log_in_page.dart -d edge
 
+/// El Screen de arranque
+class LogInPage extends StatelessWidget {
+  const LogInPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.indigo,
+      appBar: AppBar(
+        title: const Text("Ingreso al Sistema"),
+        backgroundColor: Colors.indigo.shade400,
+        foregroundColor: Colors.white,
+      ),
+      body: Center(
+        // Para desplazarse en el celular
+        child: SingleChildScrollView(
+          child: Padding(
+            // Margen externo para el celular
+            padding: const EdgeInsets.all(20.0),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 400),
+
+              child: Card(
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                color: Colors.white,
+                child: Padding(
+                  // padding interno de los textos
+                  padding: const EdgeInsets.all(30.0),
+                  child: LoginInputSeccion(),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+/// Clase con los componentes visuales del login
 class LoginInputSeccion extends StatefulWidget {
   const LoginInputSeccion({super.key,});
 
@@ -47,16 +87,10 @@ class _LoginInputSeccionState extends State<LoginInputSeccion> {
           MaterialPageRoute(
             builder: (_) => HomePage(),
           ),
-        );
-        /*
-        // El que se usara al juntar los codigos
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => HomePage(),
-          ),
-        );
-         */
+        ).then((_) {
+          _emailController.clear();
+          _passwordController.clear();
+        });
       } else {
         // CASO: Correo existe, pero la contraseña está mal
         setState(() {
@@ -119,17 +153,6 @@ class _LoginInputSeccionState extends State<LoginInputSeccion> {
         ),
 
         const SizedBox(height: 20),
-
-        /*
-        TextField(
-          controller: _emailController,
-          decoration: const InputDecoration(
-            labelText: "Correo electrónico",
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(Icons.email),
-          ),
-        ),
-         */
 
         Autocomplete<String>(
           // Mostrar correos existentes
@@ -198,49 +221,6 @@ class _LoginInputSeccionState extends State<LoginInputSeccion> {
     );
   }
 }
-
-
-class LogInPage extends StatelessWidget {
-  const LogInPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.indigo,
-      appBar: AppBar(
-        title: const Text("Ingreso al Sistema"),
-        backgroundColor: Colors.indigo.shade400,
-        foregroundColor: Colors.white,
-      ),
-      body: Center(
-        // Para desplazarse en el celular
-        child: SingleChildScrollView(
-          child: Padding(
-            // Margen externo para el celular
-            padding: const EdgeInsets.all(20.0),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 400),
-
-              child: Card(
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                color: Colors.white,
-                child: Padding(
-                  // padding interno de los textos
-                  padding: const EdgeInsets.all(30.0),
-                  child: LoginInputSeccion(),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 
 
 // Main de prueba
