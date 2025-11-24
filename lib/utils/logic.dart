@@ -103,4 +103,14 @@ class ReportManager {
   static void clearReports() {
     _reports.clear();
   }
+
+  //Ordenar por antiguedad los reportes
+  static List<Report> getReportsSorted({bool newestFirst = true}) {
+    final sorted = [..._reports];
+    sorted.sort((a, b) => newestFirst
+        ? b.dateReported.compareTo(a.dateReported)    //más recientes primero
+        : a.dateReported.compareTo(b.dateReported));  //más antiguos primero
+    return sorted;
+  }
+
 }

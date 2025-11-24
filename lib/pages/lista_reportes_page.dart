@@ -212,37 +212,114 @@ class BuildReportesGrid extends StatelessWidget {
 
 }
 
-/// Inicializador del Screen de los reportes
-class ListaReportesScreen extends StatelessWidget {
+//Inicializador del Screen de los reportes e
+//Implementacion de los filtros
+class ListaReportesScreen extends StatefulWidget {
   final List<Report> reportesActuales;
 
-  const ListaReportesScreen({
-    super.key,
-    required this.reportesActuales,
-  });
+  const ListaReportesScreen({super.key, required this.reportesActuales});
+
+  @override
+  State<ListaReportesScreen> createState() => _ListaReportesScreenState();
+}
+
+class _ListaReportesScreenState extends State<ListaReportesScreen> {
+  bool _newestFirst = true;
+  String _selectedCategory = "Todos";
+
+  final List<String> _categorias = [
+    "Todos",
+    "Estudio",
+    "Tecnología",
+    "Personal",
+    "Higiene",
+    "Ropa",
+    "Deportivo",
+    "Otros"
+  ];
 
   @override
   Widget build(BuildContext context) {
+    // Ordenamos por antigüedad
+    var reportesOrdenados = [...widget.reportesActuales];
+    reportesOrdenados.sort((a, b) => _newestFirst
+        ? b.dateReported.compareTo(a.dateReported)
+        : a.dateReported.compareTo(b.dateReported));
+
+    // Filtramos por categoría
+    if (_selectedCategory != "Todos") {
+      reportesOrdenados = reportesOrdenados
+          .where((r) => r.category == _selectedCategory)
+          .toList();
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Reportes actuales",style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        title: const Text("Reportes actuales",
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
+        actions: [
+          // Botón para alternar antigüedad
+          IconButton(
+            icon: Icon(_newestFirst ? Icons.arrow_downward : Icons.arrow_upward),
+            tooltip: _newestFirst
+                ? "Ordenar por más antiguos"
+                : "Ordenar por más recientes",
+            onPressed: () {
+              setState(() {
+                _newestFirst = !_newestFirst;
+              });
+            },
+          ),
+        ],
       ),
+      body: Column(
+        children: [
+          // 🔥 Dropdown para categorías
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: DropdownButtonFormField<String>(
+              value: _selectedCategory,
+              items: _categorias.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              decoration: const InputDecoration(
+                labelText: "Filtrar por categoría",
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedCategory = newValue!;
+                });
+              },
+            ),
+          ),
 
-      body: reportesActuales.isEmpty
-          ? const Center(
-        child: Text("No hay reportes ingresados todavía.",
-          style: TextStyle(fontSize: 18, color: Colors.black),
-        ),
-      )
-          : BuildReportesGrid(
-        reportes: reportesActuales,
+          // Lista de reportes filtrados
+          Expanded(
+            child: reportesOrdenados.isEmpty
+                ? const Center(
+                    child: Text(
+                      "No hay reportes en esta categoría.",
+                      style: TextStyle(fontSize: 18, color: Colors.black),
+                    ),
+                  )
+                : BuildReportesGrid(reportes: reportesOrdenados),
+          ),
+        ],
       ),
     );
   }
 }
+
+
+
+
 
 
 /*
