@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart'; 
+import 'osm_map_picker.dart'; 
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
 
 class CreateFoundObjectReportPage extends StatefulWidget {
@@ -71,7 +73,6 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                   _descriptionController.selection = TextSelection.fromPosition(
                     TextPosition(offset: trimmed.length),
                   );
-        
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text("Máximo 100 palabras alcanzado"),
@@ -82,18 +83,38 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
               },
             ),
           ),
+          
           Padding(
             padding: const EdgeInsets.all(8),
             child: TextField(
               controller: _ubicationController,
+              readOnly: true,
+              onTap: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const OsmMapPicker(isLostObject: false), 
+                  ),
+                );
+
+                if (result != null && result is Map) {
+                  final LatLng loc = result['location'];
+                  setState(() {
+                    _ubicationController.text = 
+                        "Lat: ${loc.latitude.toStringAsFixed(5)}, Lng: ${loc.longitude.toStringAsFixed(5)}, Rad: 0.0";
+                  });
+                }
+              },
               decoration: const InputDecoration(
                 labelText: "Ubicación del objeto",
-                hintText: "Ingrese la ubicación del objeto",
+                hintText: "Toque para seleccionar en el mapa",
                 border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.place),
+                prefixIcon: Icon(Icons.map_outlined),
+                suffixIcon: Icon(Icons.arrow_forward_ios, size: 16),
               ),
             ),
           ),
+
           Padding(
             padding: const EdgeInsets.all(8),
             child: TextField(
@@ -160,7 +181,6 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                   _notasController.selection = TextSelection.fromPosition(
                     TextPosition(offset: trimmed.length),
                   );
-        
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text("Máximo 30 palabras alcanzado"),
@@ -293,13 +313,9 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                     userId: _userEmailController.text.trim(),
                     reportState: "Pendiente"
                   );
-        
-        
                   ReportManager.addReport(newReport);
-                  print("Reporte creado: $newReport");                                  //Prints que demuestran que si se guardan
-                  print("Total reportes en memoria: ${ReportManager.reports.length}");  //los reportes con los datos escritos
-                                                                                        //los resultados se muestran en la consola
-        
+                  print("Reporte creado: $newReport");                                  
+                  print("Total reportes en memoria: ${ReportManager.reports.length}");  
                   Navigator.pop(context, newReport);
                 },
                 child: const Row(
