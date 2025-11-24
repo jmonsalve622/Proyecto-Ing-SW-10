@@ -30,48 +30,48 @@ class _HomePageState extends State<HomePage> {
             borderRadius: BorderRadius.circular(12),
             color: Colors.blue,
           ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Boton para crear reporte
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.blue,
-              ),
-              child: const Text("Crear Reporte",),
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SelectCreateReportPage(),
-                  ),
-                );
-              },
-            ),
-
-            const SizedBox(height: 20),
-
-            // Boton para ver reportes
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.blue,
-              ),
-              child: const Text("Ver Reportes"),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ListaReportesScreen(
-                      reportesActuales: ReportManager.reports,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Boton para crear reporte
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.blue,
+                ),
+                child: const Text("Crear Reporte",),
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SelectCreateReportPage(),
                     ),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+                  );
+                },
+              ),
+
+              const SizedBox(height: 20),
+
+              // Boton para ver reportes
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.blue,
+                ),
+                child: const Text("Ver Reportes"),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ListaReportesScreen(
+                        reportesActuales: ReportManager.reports,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

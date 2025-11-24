@@ -3,23 +3,28 @@ class User {
   final String id;
   final String name;
   final String email;
+  final String password;
+  final bool canDeleteReports;
 
-  User({required this.id,
-  required this.name,
-  required this.email,});
+  const User({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.password,
+    this.canDeleteReports = false,
+  });
 }
 
 //Clase Admin, por ahora solo contiene los atributos basicos: id, nombre y correo.
 //El admin hereda del Usuario, el admin tiene un permiso especial que permite eliminar publicaciones
 class Admin extends User {
-  final bool canDeleteReports;
 
-  Admin({
-    required String id,
-    required String name,
-    required String email,
-    this.canDeleteReports = true,
-  }) : super(id: id, name: name, email: email);
+  const Admin({
+    required super.id,
+    required super.name,
+    required super.email,
+    required super.password,
+  }) : super(canDeleteReports: true);
 }
 
 //Clase Objeto Perdido, este contiene la id, nombre, alguna imagen que lo represente

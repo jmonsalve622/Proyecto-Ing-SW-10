@@ -67,6 +67,15 @@ class _OsmMapPickerState extends State<OsmMapPicker> {
     return x > pX;
   }
 
+  void _confirmSelection() {
+    if (_pickedLocation != null) {
+      Navigator.pop(context, {
+        'location': _pickedLocation,
+        'radius': widget.isLostObject ? _currentRadius : 0.0,
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,19 +83,6 @@ class _OsmMapPickerState extends State<OsmMapPicker> {
         title: Text(widget.isLostObject ? "Zona de pérdida" : "Ubicación exacta"),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.check),
-            onPressed: _pickedLocation == null
-                ? null
-                : () {
-                    Navigator.pop(context, {
-                      'location': _pickedLocation,
-                      'radius': widget.isLostObject ? _currentRadius : 0.0,
-                    });
-                  },
-          ),
-        ],
       ),
       body: Stack(
         children: [
@@ -165,32 +161,55 @@ class _OsmMapPickerState extends State<OsmMapPicker> {
             ],
           ),
           
-          if (widget.isLostObject && _pickedLocation != null)
+          if (_pickedLocation != null)
             Positioned(
               bottom: 30,
               left: 20,
               right: 20,
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
-                  boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0,4))],
+                  boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0,4))],
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text("Radio de búsqueda: ${_currentRadius.toInt()} metros", style: const TextStyle(fontWeight: FontWeight.bold)),
-                    Slider(
-                      value: _currentRadius,
-                      min: 5.0,
-                      max: 100.0,
-                      activeColor: Colors.purple,
-                      onChanged: (value) {
-                        setState(() {
-                          _currentRadius = value;
-                        });
-                      },
+                    if (widget.isLostObject) ...[
+                      Text("Radio de búsqueda: ${_currentRadius.toInt()} metros", style: const TextStyle(fontWeight: FontWeight.bold)),
+                      Slider(
+                        value: _currentRadius,
+                        min: 5.0,
+                        max: 100.0,
+                        activeColor: Colors.purple,
+                        onChanged: (value) {
+                          setState(() {
+                            _currentRadius = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton.icon(
+                        onPressed: _confirmSelection,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          elevation: 0,
+                        ),
+                        icon: const Icon(Icons.check_circle_outline, size: 26),
+                        label: const Text(
+                          "Confirmar Ubicación",
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ],
                 ),
