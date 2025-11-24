@@ -284,13 +284,14 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
                     description: _descriptionController.text,
                     ubication: _ubicationController.text,
                     category: _categoryController.text,
-                    state: objectState,
+                    initialState: objectState,
                     dateReported: DateTime.now(),
                     notas: _notasController.text,
                     userName: _userNameController.text,
                     userEmail: _userEmailController.text,
                     userPhone: _userPhoneController.text,
                     userId: _userEmailController.text.trim(),
+                    reportState: "Pendiente"
                   );
         
         
