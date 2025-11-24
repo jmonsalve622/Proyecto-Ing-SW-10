@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ing_sw_10/pages/home_page.dart';
 import 'package:proyecto_ing_sw_10/utils/mock_data.dart';
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
 
@@ -9,12 +10,7 @@ import 'package:proyecto_ing_sw_10/utils/logic.dart';
 // flutter run -t lib/log_in_page.dart -d edge
 
 class LoginInputSeccion extends StatefulWidget {
-  final Admin adminInstance;
-
-  const LoginInputSeccion({
-    super.key,
-    required this.adminInstance,
-  });
+  const LoginInputSeccion({super.key,});
 
   @override
   State<LoginInputSeccion> createState() => _LoginInputSeccionState();
@@ -22,35 +18,98 @@ class LoginInputSeccion extends StatefulWidget {
 
 class _LoginInputSeccionState extends State<LoginInputSeccion> {
   late TextEditingController _emailController;
-  late TextEditingController _passwordController;
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _emailController = TextEditingController(text: widget.adminInstance.email);
-    _passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  void _validarLogin() {
-    if (_emailController.text == widget.adminInstance.email &&
-        _passwordController.text == widget.adminInstance.password) {
-      print("Entrando a la vista del Admin");
-    } else {
-      print("Datos incorrectos o este email no es de Admin");
+  void _onPressedIngresar() {
+    final emailIngresado = _emailController.text.trim();
+    final passwordIngresado = _passwordController.text;
+
+    try {
+      final usuarioEncontrado = listaUsuariosRegistrados.firstWhere(
+              (user) => user.email == emailIngresado
+      );
+
+      if (usuarioEncontrado.password == passwordIngresado) {
+        // CASO: Éxito al intentar logearse
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => HomePage(),
+          ),
+        );
+        /*
+        // El que se usara al juntar los codigos
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => HomePage(),
+          ),
+        );
+         */
+      } else {
+        // CASO: Correo existe, pero la contraseña está mal
+        setState(() {
+          _showErrorMessage("Contraseña incorrecta");
+        });
+      }
+    } catch(e) {
+      // CASO: No existe el correo ingresado
+      _showErrorMessage("Correo no registrado");
     }
+  }
+
+  void _showErrorMessage(String mensaje) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.red.shade600,
+        elevation: 4,
+        margin: const EdgeInsets.all(20),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+
+        // Icono + Texto
+        content: Row(
+          children: [
+            const Icon(Icons.error_outline, color: Colors.white),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                mensaje,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+
+        // Duración del mensaje
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+
         const Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -58,7 +117,10 @@ class _LoginInputSeccionState extends State<LoginInputSeccion> {
             style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           ),
         ),
+
         const SizedBox(height: 20),
+
+        /*
         TextField(
           controller: _emailController,
           decoration: const InputDecoration(
@@ -67,7 +129,41 @@ class _LoginInputSeccionState extends State<LoginInputSeccion> {
             prefixIcon: Icon(Icons.email),
           ),
         ),
+         */
+
+        Autocomplete<String>(
+          // Mostrar correos existentes
+          optionsBuilder: (TextEditingValue textEditingValue) {
+            if (textEditingValue.text == '') {
+              return listaUsuariosRegistrados.map((user) => user.email);
+            }
+
+            return listaUsuariosRegistrados
+                .map((user) => user.email)
+                .where((email) {
+              return email.toLowerCase().contains(textEditingValue.text.toLowerCase());
+            });
+          },
+
+          // Diseño del TextField
+          fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
+            _emailController = controller;
+
+            return TextField(
+              controller: controller,
+              focusNode: focusNode,
+              onEditingComplete: onFieldSubmitted,
+              decoration: const InputDecoration(
+                labelText: "Correo electrónico",
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.email),
+              ),
+            );
+          },
+        ),
+
         const SizedBox(height: 20),
+
         TextField(
           controller: _passwordController,
           obscureText: true,
@@ -77,15 +173,17 @@ class _LoginInputSeccionState extends State<LoginInputSeccion> {
             prefixIcon: Icon(Icons.lock),
           ),
         ),
+
         const SizedBox(height: 20),
+
         Align(
           alignment: Alignment.centerRight,
           child: ElevatedButton(
-            onPressed: _validarLogin,
+            onPressed: _onPressedIngresar,
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.indigo,
               foregroundColor: Colors.white,
-              // Podria ir un padding aqui por diseño meramente
+              // Podria ir un padding aqui, solo por detalle visual
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -101,28 +199,24 @@ class _LoginInputSeccionState extends State<LoginInputSeccion> {
   }
 }
 
-class LogInPage extends StatefulWidget {
+
+class LogInPage extends StatelessWidget {
   const LogInPage({super.key});
 
   @override
-  State<LogInPage> createState() => _LogInPageState();
-}
-
-class _LogInPageState extends State<LogInPage> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.indigo.shade50,
+      backgroundColor: Colors.indigo,
       appBar: AppBar(
         title: const Text("Ingreso al Sistema"),
-        backgroundColor: Colors.indigo,
+        backgroundColor: Colors.indigo.shade400,
         foregroundColor: Colors.white,
       ),
       body: Center(
         // Para desplazarse en el celular
         child: SingleChildScrollView(
           child: Padding(
-            // Margen externo para celulares
+            // Margen externo para el celular
             padding: const EdgeInsets.all(20.0),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 400),
@@ -136,7 +230,7 @@ class _LogInPageState extends State<LogInPage> {
                 child: Padding(
                   // padding interno de los textos
                   padding: const EdgeInsets.all(30.0),
-                  child: LoginInputSeccion(adminInstance: admin1),
+                  child: LoginInputSeccion(),
                 ),
               ),
             ),
@@ -146,7 +240,6 @@ class _LogInPageState extends State<LogInPage> {
     );
   }
 }
-
 
 
 
