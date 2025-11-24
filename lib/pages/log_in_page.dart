@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_ing_sw_10/pages/home_page.dart';
 import 'package:proyecto_ing_sw_10/utils/mock_data.dart';
-import 'package:proyecto_ing_sw_10/utils/logic.dart';
 
-// flutter run -t lib/log_in_page.dart -d edge
+// flutter run -t lib/pages/log_in_page.dart -d edge
 
 /// El Screen de arranque
 class LogInPage extends StatelessWidget {
@@ -14,7 +13,14 @@ class LogInPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.indigo,
       appBar: AppBar(
-        title: const Text("Ingreso al Sistema"),
+        centerTitle: true,
+        title: const Text(
+          "Bienvenido/a al Sistema de Reporte y Seguimiento de Objetos Perdidos",
+          style: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         backgroundColor: Colors.indigo.shade400,
         foregroundColor: Colors.white,
       ),
@@ -222,7 +228,7 @@ class _LoginInputSeccionState extends State<LoginInputSeccion> {
   }
 }
 
-
+/*
 // Main de prueba
 void main() {
   runApp(const MainApp());
@@ -239,3 +245,4 @@ class MainApp extends StatelessWidget {
     );
   }
 }
+ */

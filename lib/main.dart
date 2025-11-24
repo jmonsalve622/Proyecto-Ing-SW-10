@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_ing_sw_10/pages/home_page.dart';
 import 'package:proyecto_ing_sw_10/pages/log_in_page.dart';
 
 void main() {
