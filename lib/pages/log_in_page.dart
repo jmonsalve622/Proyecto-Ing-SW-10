@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marquee/marquee.dart';
 import 'package:proyecto_ing_sw_10/pages/home_page.dart';
 import 'package:proyecto_ing_sw_10/utils/mock_data.dart';
 
@@ -14,6 +15,19 @@ class LogInPage extends StatelessWidget {
       backgroundColor: Colors.indigo,
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: Colors.indigo.shade400,
+        foregroundColor: Colors.white,
+        title: const ResponsiveAppBarTitle(
+          text: "Bienvenido/a al Sistema de Reporte y Seguimiento de Objetos Perdidos",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      /*
+      appBar: AppBar(
+        centerTitle: true,
         title: const Text(
           "Bienvenido/a al Sistema de Reporte y Seguimiento de Objetos Perdidos",
           style: TextStyle(
@@ -24,6 +38,7 @@ class LogInPage extends StatelessWidget {
         backgroundColor: Colors.indigo.shade400,
         foregroundColor: Colors.white,
       ),
+       */
       body: Center(
         // Para desplazarse en el celular
         child: SingleChildScrollView(
@@ -227,6 +242,63 @@ class _LoginInputSeccionState extends State<LoginInputSeccion> {
     );
   }
 }
+
+
+
+class ResponsiveAppBarTitle extends StatelessWidget {
+  final String text;
+  final TextStyle style;
+
+  const ResponsiveAppBarTitle({
+    super.key,
+    required this.text,
+    required this.style,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final textPainter = TextPainter(
+          text: TextSpan(
+            text: text,
+            style: style,
+          ),
+          maxLines: 1,
+          textDirection: TextDirection.ltr,
+        );
+
+        textPainter.layout(minWidth: 0, maxWidth: double.infinity);
+
+        if (textPainter.width > constraints.maxWidth) {
+          // CASO El titulo no cabe (usualmente para version movil)
+          return SizedBox(
+            height: 30,
+            child: Marquee(
+              text: text,
+              style: style,
+              scrollAxis: Axis.horizontal,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              blankSpace: 50.0,
+              velocity: 50.0,
+              pauseAfterRound: const Duration(seconds: 2),
+              startPadding: 10.0,
+            ),
+          );
+        } else {
+          // CASO El titulo cabe (version edge o windows)
+          return Text(
+            text,
+            style: style,
+            textAlign: TextAlign.center,
+          );
+        }
+      },
+    );
+  }
+}
+
+
 
 /*
 // Main de prueba
