@@ -1,6 +1,6 @@
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
 
-final Admin admin1 = Admin(
+final Admin admin = Admin(
   id: "a-001",
   name: "J. Aguirre",
   email: "jaguirre@udec.cl",
@@ -14,7 +14,23 @@ final User usuario1 = User(
   password: "elmati",
 );
 
+final User usuario2 = User(
+  id: "u-002",
+  name: "Pierluigi Cerulo",
+  email: "pcerulo@udec.cl",
+  password: "loyica",
+);
+
+final User usuario3 = User(
+  id: "u-003",
+  name: "Carlos Muñoz",
+  email: "cmuñoz@udec.cl",
+  password: "voytardechicos",
+);
+
 final List<User> listaUsuariosRegistrados = [
-  admin1,
+  admin,
   usuario1,
+  usuario2,
+  usuario3,
 ];
