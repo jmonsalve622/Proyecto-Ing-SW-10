@@ -82,11 +82,11 @@ class BuildBotonReporte extends StatelessWidget {
 
             children: [
               Text(
-                "Tipo de reporte: ${reportInstance.state}",
+                "Tipo de reporte: ${reportInstance.initialState}",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
-                  color: reportInstance.state == "Encontrado" ? Colors.green : Colors.red,
+                  color: reportInstance.initialState == "Encontrado" ? Colors.green : Colors.red,
                 ),
               ),
               const SizedBox(height: 4),
