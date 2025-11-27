@@ -25,6 +25,19 @@ class BuildBotonReporte extends StatelessWidget {
     const Color borderColor = Colors.deepPurpleAccent;
     const double anchoBorde = 10;
 
+    String stateText;
+    Color stateColor;
+    switch (reportInstance.initialState) {
+      case ObjectState.Found:
+        stateText = "Encontrado";
+        stateColor = Colors.green;
+        break;
+      case ObjectState.Lost:
+        stateText = "Perdido";
+        stateColor = Colors.red;
+        break;
+    }
+
     return ElevatedButton(
       onPressed: onReportPressed,
       style: ElevatedButton.styleFrom(
@@ -82,11 +95,11 @@ class BuildBotonReporte extends StatelessWidget {
 
             children: [
               Text(
-                "Tipo de reporte: ${reportInstance.initialState}",
+                "Tipo de reporte: $stateText",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
-                  color: reportInstance.initialState == "Encontrado" ? Colors.green : Colors.red,
+                  color: stateColor,
                 ),
               ),
               const SizedBox(height: 4),
@@ -144,10 +157,12 @@ class BuildBotonReporte extends StatelessWidget {
 /// de modo que el usuario pueda ver todos los reportes actuales.
 class BuildReportesGrid extends StatelessWidget {
   final List<Report> reportes;
+  final User currentUser;
 
   const BuildReportesGrid({
     super.key,
     required this.reportes,
+    required this.currentUser
   });
 
   @override
@@ -169,7 +184,7 @@ class BuildReportesGrid extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ReportPage(report: report),
+                  builder: (context) => ReportPage(report: report, currentUser: currentUser),
                 ),
               );
             },
@@ -216,8 +231,9 @@ class BuildReportesGrid extends StatelessWidget {
 //Implementacion de los filtros
 class ListaReportesScreen extends StatefulWidget {
   final List<Report> reportesActuales;
+  final User currentUser;
 
-  const ListaReportesScreen({super.key, required this.reportesActuales});
+  const ListaReportesScreen({super.key, required this.reportesActuales, required this.currentUser});
 
   @override
   State<ListaReportesScreen> createState() => _ListaReportesScreenState();
@@ -309,7 +325,7 @@ class _ListaReportesScreenState extends State<ListaReportesScreen> {
                       style: TextStyle(fontSize: 18, color: Colors.black),
                     ),
                   )
-                : BuildReportesGrid(reportes: reportesOrdenados),
+                : BuildReportesGrid(reportes: reportesOrdenados, currentUser: widget.currentUser),
           ),
         ],
       ),

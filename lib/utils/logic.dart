@@ -4,14 +4,14 @@ class User {
   final String name;
   final String email;
   final String password;
-  final bool canDeleteReports;
+  final bool isAdmin;
 
   const User({
     required this.id,
     required this.name,
     required this.email,
     required this.password,
-    this.canDeleteReports = false,
+    this.isAdmin = false,
   });
 }
 
@@ -24,7 +24,7 @@ class Admin extends User {
     required super.name,
     required super.email,
     required super.password,
-  }) : super(canDeleteReports: true);
+  }) : super(isAdmin: true);
 }
 
 //Clase Objeto Perdido, este contiene la id, nombre, alguna imagen que lo represente
@@ -60,8 +60,8 @@ class Report {
   final String userName;
   final String userEmail;
   final String userPhone;
-  final String initialState;
-  String reportState;
+  final ObjectState initialState;
+  ReportState reportState;
 
   Report({
     required this.id,
@@ -119,3 +119,7 @@ class ReportManager {
   }
 
 }
+
+enum ReportState {Pending, Resolved}
+
+enum ObjectState {Lost, Found}

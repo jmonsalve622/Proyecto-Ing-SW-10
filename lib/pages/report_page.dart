@@ -5,10 +5,12 @@ import 'package:proyecto_ing_sw_10/utils/logic.dart';
 
 class ReportPage extends StatefulWidget {
   final Report report;
+  final User currentUser;
 
   const ReportPage({
     super.key,
     required this.report,
+    required this.currentUser
   });
 
   @override
@@ -248,6 +250,8 @@ class _ReportPageState extends State<ReportPage> {
                 title: "Teléfono de Contacto",
                 content: widget.report.userPhone,
               ),
+
+            _buildAdminWidget()
             ],
           ),
         ),
@@ -278,7 +282,104 @@ class _ReportPageState extends State<ReportPage> {
       ),
     );
   }
+
+  Widget _buildChangeStateWidget() {
+    return Padding(
+          padding: const EdgeInsets.all(8),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text("Estado", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Radio(
+                      activeColor: Colors.blue,
+                      value: ReportState.Pending,
+                      // ignore: deprecated_member_use
+                      groupValue: widget.report.reportState,
+                      onChanged: (value) {
+                        setState(() {
+                          widget.report.reportState = value!;
+                        });
+                      },
+                    ),
+                    Text("Pendidente")
+                  ]),
+                  Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Radio(
+                      activeColor: Colors.blue,
+                      value: ReportState.Resolved,
+                      // ignore: deprecated_member_use
+                      groupValue: widget.report.reportState,
+                      onChanged: (value) {
+                        setState(() {
+                          widget.report.reportState = value!;
+                        });
+                      },
+                    ),
+                    Text("Resuelto")
+                  ])
+              ]
+              ),
+          )
+        );
+  }
+
+  Widget _buildDeleteReportWidget() {
+    return Padding(
+            padding: const EdgeInsets.all(15),
+            child: SizedBox(
+              width: 250,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: widget.report.reportState == ReportState.Resolved ? () {
+                  ReportManager.removeReport(widget.report.id);
+                  Navigator.pop(context, widget.report);
+                } : null,
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Icon(Icons.delete, color: Colors.black, size: 25),
+                    Text("Eliminar Reporte",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black)),
+                  ],
+                ),
+              ),
+            ),
+          );
+  }
+
+  Widget _buildAdminWidget() {
+    if (!widget.currentUser.isAdmin) return const SizedBox.shrink();
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        const Divider(height: 30, thickness: 1),
+
+        const Text(
+          "Acciones de Administrador",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 12),
+
+        _buildChangeStateWidget(),
+        _buildDeleteReportWidget()
+      ]
+      );
+  }
 }
+
+
 
 // --- PANTALLA DE MAPA COMPLETO ---
 class FullMapScreen extends StatelessWidget {

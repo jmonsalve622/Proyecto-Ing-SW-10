@@ -15,39 +15,53 @@ class _SelectCreateReportPageState extends State<SelectCreateReportPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.white,
         title: Text("Selecciona el tipo de reporte"),
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            // Boton para crear reporte
-            ElevatedButton(
-              child: const Text("Reporte Objeto Encontrado"),
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CreateFoundObjectReportPage(),
+            // Boton para crear reporte de objeto encontrado
+            SizedBox(
+              height: 70,
+              width: 300,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
                   ),
-                );
-              },
+                child: const Text("Reporte Objeto Encontrado", style: TextStyle(fontSize: 20)),
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateFoundObjectReportPage(),
+                    ),
+                  );
+                },
+              ),
             ),
 
-            const SizedBox(height: 20),
-
-            // Boton para ver reportes
-            ElevatedButton(
-              child: const Text("Reporte Objeto Perdido"),
-              onPressed: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CreateLostObjectReportPage(),
-                  )
-                );
-              },
+            // Boton para crear reporte de objeto perdido
+            SizedBox(
+              height: 70,
+              width: 300,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                  ),
+                child: const Text("Reporte Objeto Perdido" , style: TextStyle(fontSize: 20)),
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateLostObjectReportPage(),
+                    )
+                  );
+                },
+              ),
             ),
           ],
         )

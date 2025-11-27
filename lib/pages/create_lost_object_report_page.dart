@@ -21,7 +21,6 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
   final TextEditingController _userPhoneController = TextEditingController();
   final TextEditingController _notasController = TextEditingController();
   final List<String> categoryOptions = ["Estudio", "Tecnología", "Personal", "Higene", "Ropa", "Deportivo", "Otros"];
-  final String objectState = "Perdido";
   DateTime? pickedDate;
   
   @override
@@ -305,14 +304,14 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
                     description: _descriptionController.text,
                     ubication: _ubicationController.text,
                     category: _categoryController.text,
-                    initialState: objectState,
+                    initialState: ObjectState.Lost,
                     dateReported: DateTime.now(),
                     notas: _notasController.text,
                     userName: _userNameController.text,
                     userEmail: _userEmailController.text,
                     userPhone: _userPhoneController.text,
                     userId: _userEmailController.text.trim(),
-                    reportState: "Pendiente"
+                    reportState: ReportState.Pending
                   );
                   ReportManager.addReport(newReport);
                   print("Reporte creado: $newReport");                                  

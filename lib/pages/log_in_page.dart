@@ -106,7 +106,7 @@ class _LoginInputSeccionState extends State<LoginInputSeccion> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => HomePage(),
+            builder: (_) => HomePage(currentUser: usuarioEncontrado),
           ),
         ).then((_) {
           _emailController.clear();
