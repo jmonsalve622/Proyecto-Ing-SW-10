@@ -5,8 +5,9 @@ class User {
   final String email;
   final String password;
   final bool isAdmin;
+  List <Notification> notifList = [];
 
-  const User({
+  User({
     required this.id,
     required this.name,
     required this.email,
@@ -19,7 +20,7 @@ class User {
 //El admin hereda del Usuario, el admin tiene un permiso especial que permite eliminar publicaciones
 class Admin extends User {
 
-  const Admin({
+  Admin({
     required super.id,
     required super.name,
     required super.email,
@@ -49,6 +50,7 @@ class LostObject {
 //el numero de id del usuario que hizo el reporte
 class Report {
   final String id;
+  final User creatorUser;
   final LostObject object;
   final String title;
   final String description;
@@ -65,6 +67,7 @@ class Report {
 
   Report({
     required this.id,
+    required this.creatorUser,
     required this.object,
     required this.title,
     required this.description,
@@ -123,3 +126,9 @@ class ReportManager {
 enum ReportState {Pending, Resolved}
 
 enum ObjectState {Lost, Found}
+
+class Notification {
+  final String message;
+
+  Notification({required this.message});
+}

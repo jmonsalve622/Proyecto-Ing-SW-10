@@ -4,7 +4,9 @@ import 'osm_map_picker.dart';
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
 
 class CreateFoundObjectReportPage extends StatefulWidget {
-  const CreateFoundObjectReportPage({super.key});
+  final User currentUser;
+
+  const CreateFoundObjectReportPage({super.key, required this.currentUser});
 
   @override
   State<CreateFoundObjectReportPage> createState() => _CreateFoundObjectReportPageState();
@@ -293,6 +295,7 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                   
                   final newReport = Report(
                     id: DateTime.now().millisecondsSinceEpoch.toString(),
+                    creatorUser: widget.currentUser,
                     object: LostObject(
                       id: "obj-${DateTime.now().millisecondsSinceEpoch}",
                       name: _titleController.text,

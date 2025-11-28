@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ing_sw_10/utils/logic.dart';
 import 'create_found_object_report_page.dart';
 import 'create_lost_object_report_page.dart';
 
 class SelectCreateReportPage extends StatefulWidget {
-  const SelectCreateReportPage({super.key});
+  final User currentUser;
+  
+  const SelectCreateReportPage({super.key, required this.currentUser});
 
   @override
   State<SelectCreateReportPage> createState() => _SelectCreateReportPageState();
@@ -36,7 +39,7 @@ class _SelectCreateReportPageState extends State<SelectCreateReportPage> {
                   await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CreateFoundObjectReportPage(),
+                      builder: (context) => CreateFoundObjectReportPage(currentUser: widget.currentUser),
                     ),
                   );
                 },
@@ -57,7 +60,7 @@ class _SelectCreateReportPageState extends State<SelectCreateReportPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CreateLostObjectReportPage(),
+                      builder: (context) => CreateLostObjectReportPage(currentUser: widget.currentUser),
                     )
                   );
                 },

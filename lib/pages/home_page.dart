@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SelectCreateReportPage(),
+                        builder: (context) => SelectCreateReportPage(currentUser: widget.currentUser),
                       ),
                     );
                   },
