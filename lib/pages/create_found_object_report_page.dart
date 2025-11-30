@@ -20,8 +20,8 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
   final TextEditingController _ubicationController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
-  final TextEditingController _userNameController = TextEditingController();
-  final TextEditingController _userEmailController = TextEditingController();
+  //final TextEditingController _userNameController = TextEditingController();
+  //final TextEditingController _userEmailController = TextEditingController();
   final TextEditingController _userPhoneController = TextEditingController(text: "+56 9 ");
   final TextEditingController _notasController = TextEditingController();
   final List<String> categoryOptions = ["Estudio", "Tecnología", "Personal", "Higene", "Ropa", "Deportivo", "Otros"];
@@ -155,14 +155,14 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                 onChanged: (value) {
                   final words = value.trim().split(RegExp(r'\s+'));
                   if (words.length > 100) {
-                    final trimmed = words.sublist(0, 30).join(' ');
+                    final trimmed = words.sublist(0, 100).join(' ');
                     _notasController.text = trimmed;
                     _notasController.selection = TextSelection.fromPosition(
                       TextPosition(offset: trimmed.length),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text("Máximo 30 palabras alcanzado"),
+                        content: Text("Máximo 100 palabras alcanzado"),
                         duration: Duration(seconds: 2),
                       ),
                     );
@@ -257,15 +257,16 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                       initialState: ObjectState.Found,
                       dateReported: DateTime.now(),
                       notas: _notasController.text,
-                      userName: _userNameController.text,
-                      userEmail: _userEmailController.text,
+                      userName: widget.currentUser.name,
+                      userEmail: widget.currentUser.email,
                       userPhone: _userPhoneController.text,
-                      userId: _userEmailController.text.trim(),
+                      userId: widget.currentUser.id,
                       reportState: ReportState.Pending
                     );
                     ReportManager.addReport(newReport);
                     debugPrint("Reporte creado: $newReport");
                     debugPrint("Total reportes en memoria: ${ReportManager.reports.length}");
+                    debugPrint("Usuario que lo creo: ${widget.currentUser.name}");
                     Navigator.pop(context, newReport);
                   },
                   child: const Row(

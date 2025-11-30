@@ -34,7 +34,7 @@ class BuildBotonReporte extends StatelessWidget {
         break;
       case ObjectState.Lost:
         stateText = "Perdido";
-        stateColor = Colors.red;
+        stateColor = Colors.redAccent;
         break;
     }
 
@@ -94,6 +94,36 @@ class BuildBotonReporte extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
 
             children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Tipo de reporte: ",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black38,
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: stateColor,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      stateText,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black, // Texto negro como pediste
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              /*
               Text(
                 "Tipo de reporte: $stateText",
                 style: TextStyle(
@@ -102,6 +132,8 @@ class BuildBotonReporte extends StatelessWidget {
                   color: stateColor,
                 ),
               ),
+
+               */
               const SizedBox(height: 4),
               Text.rich(
                 TextSpan(
@@ -135,7 +167,7 @@ class BuildBotonReporte extends StatelessWidget {
                   children: [
                     TextSpan(text: "Publicado por: "), // Etiqueta más corta
                     TextSpan(
-                      text: reportInstance.userId,
+                      text: reportInstance.userName,
                       style: const TextStyle(
                         color: Colors.black,
                       ),
@@ -192,37 +224,6 @@ class BuildReportesGrid extends StatelessWidget {
         );
       },
     );
-
-    /*
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: maxColumnas,
-        mainAxisSpacing: margenY,
-        crossAxisSpacing: margenX,
-      ),
-
-      padding: paddingGrid,
-
-      itemCount: reportes.length,
-      itemBuilder: (BuildContext context, int index) {
-        final Report report = reportes[index];
-
-        return BuildBotonReporte(
-          reportInstance: report,
-          onReportPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ReportPage(report: report),
-              ),
-            );
-            print("Ingresando a reporte: ${report.title}");
-          },
-        );
-      },
-    );
-
-     */
   }
 
 }

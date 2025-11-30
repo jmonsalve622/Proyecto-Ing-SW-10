@@ -52,10 +52,12 @@ class _ReportPageState extends State<ReportPage> {
     final locationData = _getLocationData(widget.report.ubication);
     final LatLng? coordinates = locationData?['coordinates'];
     final double radius = locationData?['radius'] ?? 0.0;
+    final String stateText = (widget.report.initialState == ObjectState.Found) ? "Encontrado" : "Perdido";
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.report.title),
+        title: Text("Reporte: ${widget.report.object.name}"),
+        centerTitle: true,
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
       ),
@@ -92,16 +94,17 @@ class _ReportPageState extends State<ReportPage> {
               const SizedBox(height: 16),
 
               Text(
-                widget.report.object.name,
+                "Tipo: $stateText",
                 style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
 
-              Text(
-                widget.report.description,
-                style: const TextStyle(fontSize: 16, height: 1.5),
+              _buildDetailRow(
+                  icon: Icons.note_outlined,
+                  title: "Descripción del Objeto",
+                  content: widget.report.description,
               ),
-              
+
               const Divider(height: 30, thickness: 1),
 
               const Row(

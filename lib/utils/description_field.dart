@@ -90,7 +90,7 @@ class _DescriptionFieldState extends State<DescriptionField> {
               : null,
           helperMaxLines: 5,
           border: const OutlineInputBorder(),
-          prefixIcon: const Icon(Icons.notes),
+          prefixIcon: const Icon(Icons.note_outlined),
         ),
 
         onChanged: (String value) {
