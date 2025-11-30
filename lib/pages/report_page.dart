@@ -308,7 +308,7 @@ class _ReportPageState extends State<ReportPage> {
                         });
                       },
                     ),
-                    Text("Pendidente")
+                    Text("Pendiente")
                   ]),
                   Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
