@@ -1,4 +1,8 @@
 //Clase Usuario, por ahora solo contiene los atributos basicos: id, nombre y correo
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/material.dart';
+
 class User {
   final String id;
   final String name;
@@ -43,6 +47,7 @@ class LostObject {
 //del objeto, la ubicacion donde se perdio\encontro, la categoria del objeto (para los filtros), la fecha de la publicacion y
 //el numero de id del usuario que hizo el reporte
 class Report {
+  final File image;
   final String id;
   final LostObject object;
   final String title;
@@ -59,6 +64,7 @@ class Report {
   String reportState;
 
   Report({
+    required this.image,
     required this.id,
     required this.object,
     required this.title,

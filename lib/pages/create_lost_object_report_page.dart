@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart'; 
 import 'osm_map_picker.dart'; 
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreateLostObjectReportPage extends StatefulWidget {
   const CreateLostObjectReportPage({super.key});
@@ -11,6 +14,9 @@ class CreateLostObjectReportPage extends StatefulWidget {
 }
 
 class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage> {
+  XFile? image;
+  File imagefinal = File('diagramas/vacio.jpg');
+  final ImagePicker picker = ImagePicker();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _ubicationController = TextEditingController();
@@ -41,6 +47,15 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
             padding: EdgeInsets.all(8),
             child: Text("Información del reporte",
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: ElevatedButton(
+              onPressed: () async {
+                image = await picker.pickImage(source: ImageSource.gallery) as XFile;
+              },
+              child: const Text("Seleccionar imagen del objeto"),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8),
@@ -292,8 +307,11 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
                     );
                     return;
                   }
-                  
+                  if(image != null){
+                    imagefinal = File(image!.path);
+                  }
                   final newReport = Report(
+                    image: imagefinal,
                     id: DateTime.now().millisecondsSinceEpoch.toString(),
                     object: LostObject(
                       id: "obj-${DateTime.now().millisecondsSinceEpoch}",

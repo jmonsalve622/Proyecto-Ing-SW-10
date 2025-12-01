@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart'; 
 import 'osm_map_picker.dart'; 
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 class CreateFoundObjectReportPage extends StatefulWidget {
   const CreateFoundObjectReportPage({super.key});
@@ -11,6 +15,9 @@ class CreateFoundObjectReportPage extends StatefulWidget {
 }
 
 class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPage> {
+  XFile? image;
+  File imagefinal = File('diagramas/vacio.jpg');
+  final ImagePicker picker = ImagePicker();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _ubicationController = TextEditingController();
@@ -41,6 +48,21 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
             padding: EdgeInsets.all(8),
             child: Text("Información del reporte",
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
+          ),
+          Padding(
+            padding:const EdgeInsets.all(8),
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                ElevatedButton.icon(
+                onPressed: () async {
+                  image =  await picker.pickImage(source: ImageSource.gallery);
+                },
+                icon: const Icon(Icons.image),
+                label: const Text("Seleccionar imagen"),
+                )
+              ]
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8),
@@ -291,8 +313,12 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                     );
                     return;
                   }
+                  if(image != null){
+                    imagefinal = File(image!.path);
+                  }
                   
                   final newReport = Report(
+                    image: imagefinal,
                     id: DateTime.now().millisecondsSinceEpoch.toString(),
                     object: LostObject(
                       id: "obj-${DateTime.now().millisecondsSinceEpoch}",
