@@ -31,12 +31,14 @@ class Admin extends User {
 class LostObject {
   final String id;
   final String name;
+  final File image;
   final String imageUrl;
   final DateTime dateLost;
 
   LostObject({
     required this.id,
     required this.name,
+    required this.image,
     required this.imageUrl,
     required this.dateLost,
   });
@@ -47,7 +49,7 @@ class LostObject {
 //del objeto, la ubicacion donde se perdio\encontro, la categoria del objeto (para los filtros), la fecha de la publicacion y
 //el numero de id del usuario que hizo el reporte
 class Report {
-  final File image;
+  File image;
   final String id;
   final LostObject object;
   final String title;

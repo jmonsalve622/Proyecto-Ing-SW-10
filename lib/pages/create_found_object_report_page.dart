@@ -50,6 +50,15 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
           ),
           Padding(
+            padding: const EdgeInsets.all(8),
+            child: Image.file(
+                  imagefinal!,
+                  fit: BoxFit.contain,
+                  width: 300,
+                  height: 300,
+            ),
+          ),
+          Padding(
             padding:const EdgeInsets.all(8),
             child: Column(
               children: [
@@ -57,6 +66,9 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                 ElevatedButton.icon(
                 onPressed: () async {
                   image =  await picker.pickImage(source: ImageSource.gallery);
+                  if (image != null){
+                    imagefinal = File(image!.path);
+                  }
                 },
                 icon: const Icon(Icons.image),
                 label: const Text("Seleccionar imagen"),
@@ -313,16 +325,19 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                     );
                     return;
                   }
-                  if(image != null){
-                    imagefinal = File(image!.path);
+                  if(imagefinal == File('diagramas/vacio.jpg')){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("El objeto debe tener una imagen")),
+                    );
+                    return;
                   }
-                  
                   final newReport = Report(
                     image: imagefinal,
                     id: DateTime.now().millisecondsSinceEpoch.toString(),
                     object: LostObject(
                       id: "obj-${DateTime.now().millisecondsSinceEpoch}",
                       name: _titleController.text,
+                      image: imagefinal,
                       imageUrl: "",
                       dateLost: pickedDate ?? DateTime.now(),
                     ),

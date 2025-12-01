@@ -50,9 +50,21 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
           ),
           Padding(
             padding: const EdgeInsets.all(8),
+            child: Image.file(
+                  imagefinal!,
+                  fit: BoxFit.contain,
+                  width: 300,
+                  height: 300,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
             child: ElevatedButton(
               onPressed: () async {
                 image = await picker.pickImage(source: ImageSource.gallery) as XFile;
+                if (image != null){
+                    imagefinal = File(image!.path);
+                  }
               },
               child: const Text("Seleccionar imagen del objeto"),
             ),
@@ -307,15 +319,13 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
                     );
                     return;
                   }
-                  if(image != null){
-                    imagefinal = File(image!.path);
-                  }
                   final newReport = Report(
                     image: imagefinal,
                     id: DateTime.now().millisecondsSinceEpoch.toString(),
                     object: LostObject(
                       id: "obj-${DateTime.now().millisecondsSinceEpoch}",
                       name: _titleController.text,
+                      image: imagefinal,
                       imageUrl: "",
                       dateLost: pickedDate ?? DateTime.now(),
                     ),

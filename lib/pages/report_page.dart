@@ -69,21 +69,9 @@ class _ReportPageState extends State<ReportPage> {
                   height: 250,
                   width: double.infinity,
                   color: Colors.grey[200],
-                  child: Image.network(
-                    widget.report.object.imageUrl,
+                  child: Image.file(
+                    widget.report.object.image,
                     fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        height: 250,
-                        width: double.infinity,
-                        color: Colors.grey[300],
-                        child: Icon(
-                          Icons.broken_image_outlined,
-                          size: 100,
-                          color: Colors.grey[600],
-                        ),
-                      );
-                    },
                   ),
                 ),
               ),
