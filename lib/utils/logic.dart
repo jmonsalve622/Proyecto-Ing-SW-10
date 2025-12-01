@@ -136,10 +136,10 @@ class ReportNotification {
   ReportNotification({required this.reportState, required this.reportTitle}) {
     switch (reportState) {
       case ReportState.Pending:
-        message = "Tu reporte \"$reportTitle\" fue marcado como PENDIENTE";
+        message = "Tu reporte \"$reportTitle\" fue marcado como PENDIENTE.";
         break;
       case ReportState.Resolved:
-        message = "Tu reporte \"$reportTitle\" fue marcado como RECUPERADO";
+        message = "Tu reporte \"$reportTitle\" fue marcado como RECUPERADO.";
         break;
     }
     date = DateTime.now();
