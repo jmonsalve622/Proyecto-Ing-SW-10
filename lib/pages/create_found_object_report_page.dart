@@ -18,6 +18,7 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
   XFile? image;
   File imagefinal = File('diagramas/vacio.jpg');
   final ImagePicker picker = ImagePicker();
+  final TextEditingController _imageController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _ubicationController = TextEditingController();
@@ -65,9 +66,11 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
                 onPressed: () async {
+                  setState((){_imageController.text = _imageController.text;});
                   image =  await picker.pickImage(source: ImageSource.gallery);
                   if (image != null){
                     imagefinal = File(image!.path);
+                    setState((){_imageController.text = imagefinal.path;});
                   }
                 },
                 icon: const Icon(Icons.image),
@@ -325,7 +328,7 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                     );
                     return;
                   }
-                  if(imagefinal == File('diagramas/vacio.jpg')){
+                  if(_imageController.text.trim().isEmpty){
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("El objeto debe tener una imagen")),
                     );
