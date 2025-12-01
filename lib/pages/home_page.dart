@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ing_sw_10/pages/notifications_page.dart';
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
 import 'lista_reportes_page.dart';
 import 'select_create_report_page.dart';
@@ -22,6 +23,21 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.blue,
         elevation: 1,
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: widget.currentUser.isAdmin ? null : () async {
+              await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NotificationsPage(currentUser: widget.currentUser),
+                      ),
+                    );
+              }, 
+            icon: Icon(Icons.notifications),
+            color: Colors.white,
+            iconSize: 30,
+            )
+        ],
       ),
       body: Center(
         child: Container(
@@ -43,8 +59,7 @@ class _HomePageState extends State<HomePage> {
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.blue,
                   ),
-                  child: const Text("Crear Reporte", style: TextStyle(fontSize: 20)),
-                  onPressed: () async {
+                  onPressed: widget.currentUser.isAdmin ? null : () async {
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -52,6 +67,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   },
+                  child: const Text("Crear Reporte", style: TextStyle(fontSize: 20))
                 ),
               ),
 

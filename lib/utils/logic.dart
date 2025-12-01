@@ -5,7 +5,7 @@ class User {
   final String email;
   final String password;
   final bool isAdmin;
-  List <Notification> notifList = [];
+  List <ReportNotification> notifList = [];
 
   User({
     required this.id,
@@ -127,8 +127,23 @@ enum ReportState {Pending, Resolved}
 
 enum ObjectState {Lost, Found}
 
-class Notification {
-  final String message;
+class ReportNotification {
+  late String message;
+  late DateTime date;
+  final ReportState reportState;
+  final String reportTitle;
+  
+  ReportNotification({required this.reportState, required this.reportTitle}) {
+    switch (reportState) {
+      case ReportState.Pending:
+        message = "Tu reporte \"$reportTitle\" fue marcado como PENDIENTE";
+        break;
+      case ReportState.Resolved:
+        message = "Tu reporte \"$reportTitle\" fue marcado como RECUPERADO";
+        break;
+    }
+    date = DateTime.now();
+  }
 
-  Notification({required this.message});
+
 }

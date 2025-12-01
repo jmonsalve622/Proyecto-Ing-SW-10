@@ -92,7 +92,6 @@ class _ReportPageState extends State<ReportPage> {
                 ),
               ),
               const SizedBox(height: 16),
-
               Text(
                 "Tipo: $stateText",
                 style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
@@ -308,6 +307,8 @@ class _ReportPageState extends State<ReportPage> {
                       onChanged: (value) {
                         setState(() {
                           widget.report.reportState = value!;
+                          ReportNotification noti = ReportNotification(reportState: value, reportTitle: widget.report.title);
+                          widget.report.creatorUser.notifList.add(noti);
                         });
                       },
                     ),
@@ -324,6 +325,8 @@ class _ReportPageState extends State<ReportPage> {
                       onChanged: (value) {
                         setState(() {
                           widget.report.reportState = value!;
+                          ReportNotification noti = ReportNotification(reportState: value, reportTitle: widget.report.title);
+                          widget.report.creatorUser.notifList.add(noti);
                         });
                       },
                     ),
