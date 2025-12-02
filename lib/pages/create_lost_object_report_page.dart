@@ -4,8 +4,6 @@ import 'package:latlong2/latlong.dart';
 import '../utils/description_field.dart';
 import 'osm_map_picker.dart';
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
 class CreateLostObjectReportPage extends StatefulWidget {
     final User currentUser;
@@ -17,10 +15,6 @@ class CreateLostObjectReportPage extends StatefulWidget {
 }
 
 class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage> {
-  XFile? image;
-  File imagefinal = File('diagramas/vacio.jpg');
-  final ImagePicker picker = ImagePicker();
-  final TextEditingController _imageController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _ubicationController = TextEditingController();
@@ -49,35 +43,6 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
               child: Text("Información del reporte",
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
             ),
-            Padding(
-            padding: const EdgeInsets.all(8),
-            child: Image.file(
-                  imagefinal!,
-                  fit: BoxFit.contain,
-                  width: 300,
-                  height: 300,
-            ),
-          ),
-            Padding(
-            padding:const EdgeInsets.all(8),
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-                ElevatedButton.icon(
-                onPressed: () async {
-                  setState((){_imageController.text = _imageController.text;});
-                  image =  await picker.pickImage(source: ImageSource.gallery);
-                  if (image != null){
-                    imagefinal = File(image!.path);
-                    setState((){_imageController.text = imagefinal.path;});
-                  }
-                },
-                icon: const Icon(Icons.image),
-                label: const Text("Seleccionar imagen"),
-                )
-              ]
-            ),
-          ),
             Padding(
               padding: const EdgeInsets.all(8),
               child: TextField(
@@ -272,13 +237,11 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
                     }
 
                     final newReport = Report(
-                      image: imagefinal,
                       id: DateTime.now().millisecondsSinceEpoch.toString(),
                       creatorUser: widget.currentUser,
                       object: LostObject(
                         id: "obj-${DateTime.now().millisecondsSinceEpoch}",
                         name: _titleController.text,
-                        image: imagefinal,
                         imageUrl: "",
                         dateLost: pickedDate ?? DateTime.now(),
                       ),

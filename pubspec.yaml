@@ -16,8 +16,6 @@ dependencies:
   flutter_map: ^8.2.2
   latlong2: ^0.9.1
   marquee: ^2.2.3
-  image: ^4.5.4
-  image_picker: ^1.2.1
 
 dev_dependencies:
   flutter_test:
@@ -27,8 +25,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - diagramas/vacio.jpg
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
