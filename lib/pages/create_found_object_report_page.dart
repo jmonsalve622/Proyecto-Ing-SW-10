@@ -4,6 +4,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:proyecto_ing_sw_10/utils/description_field.dart'; 
 import 'osm_map_picker.dart'; 
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class CreateFoundObjectReportPage extends StatefulWidget {
   final User currentUser;
@@ -15,13 +17,15 @@ class CreateFoundObjectReportPage extends StatefulWidget {
 }
 
 class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPage> {
+  XFile? image;
+  File imagefinal = File('diagramas/vacio.jpg');
+  final ImagePicker picker = ImagePicker();
+  final TextEditingController _imageController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _ubicationController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
-  //final TextEditingController _userNameController = TextEditingController();
-  //final TextEditingController _userEmailController = TextEditingController();
   final TextEditingController _userPhoneController = TextEditingController(text: "+56 9 ");
   final TextEditingController _notasController = TextEditingController();
   final List<String> categoryOptions = ["Estudio", "Tecnología", "Personal", "Higene", "Ropa", "Deportivo", "Otros"];
@@ -47,7 +51,35 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
               ),
             ),
-
+            Padding(
+            padding: const EdgeInsets.all(8),
+            child: Image.file(
+                  imagefinal!,
+                  fit: BoxFit.contain,
+                  width: 300,
+                  height: 300,
+            ),
+          ),
+            Padding(
+            padding:const EdgeInsets.all(8),
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                ElevatedButton.icon(
+                onPressed: () async {
+                  setState((){_imageController.text = _imageController.text;});
+                  image =  await picker.pickImage(source: ImageSource.gallery);
+                  if (image != null){
+                    imagefinal = File(image!.path);
+                    setState((){_imageController.text = imagefinal.path;});
+                  }
+                },
+                icon: const Icon(Icons.image),
+                label: const Text("Seleccionar imagen"),
+                )
+              ]
+            ),
+          ),
             Padding(
               padding: const EdgeInsets.all(8),
               child: TextField(
@@ -240,13 +272,21 @@ class _CreateFoundObjectReportPageState extends State<CreateFoundObjectReportPag
                       );
                       return;
                     }
+                    if(_imageController.text.trim().isEmpty){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("El objeto debe tener una imagen")),
+                    );
+                    return;
+                    }
 
                     final newReport = Report(
+                      image: imagefinal,
                       id: DateTime.now().millisecondsSinceEpoch.toString(),
                       creatorUser: widget.currentUser,
                       object: LostObject(
                         id: "obj-${DateTime.now().millisecondsSinceEpoch}",
                         name: _titleController.text,
+                        image: imagefinal,
                         imageUrl: "",
                         dateLost: pickedDate ?? DateTime.now(),
                       ),
