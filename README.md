@@ -1,4 +1,4 @@
-# Proyecto-Ing-SW-10
+# Proyecto Ingeniería de Software Grupo 10
 
 ## Integrantes
 - Matías Cuello Diban (Product Owner)
