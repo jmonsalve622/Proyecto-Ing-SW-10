@@ -23,10 +23,15 @@ class _NotificationsPageState extends State<NotificationsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(reportNotification.message, style: TextStyle(fontSize: 20, color: Colors.white),),
-            Text("${reportNotification.date.day}/${reportNotification.date.month}/${reportNotification.date.year}",
-            style: TextStyle(fontSize: 15, color: Colors.white),),
-
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(reportNotification.message, style: TextStyle(fontSize: 20, color: Colors.white),),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("${reportNotification.date.day}/${reportNotification.date.month}/${reportNotification.date.year}",
+              style: TextStyle(fontSize: 15, color: Colors.white),),
+            ),
           ],
         ),
       ),
