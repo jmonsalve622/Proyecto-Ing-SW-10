@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
+import 'dart:io';
 
 class ReportPage extends StatefulWidget {
   final Report report;
@@ -67,27 +68,32 @@ class _ReportPageState extends State<ReportPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
                 child: Container(
                   height: 250,
                   width: double.infinity,
                   color: Colors.grey[200],
-                  child: Image.network(
-                    widget.report.object.imageUrl,
+                  child: (widget.report.image != null)
+                      ? Image.file(
+                    widget.report.image!,
                     fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        height: 250,
-                        width: double.infinity,
-                        color: Colors.grey[300],
-                        child: Icon(
-                          Icons.broken_image_outlined,
-                          size: 100,
-                          color: Colors.grey[600],
-                        ),
-                      );
-                    },
+                  )
+                      : const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.image_not_supported_outlined,
+                        size: 80,
+                        color: Colors.grey,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "No hay imagen disponible",
+                        style: TextStyle(color: Colors.grey, fontSize: 16),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -387,7 +393,7 @@ class _ReportPageState extends State<ReportPage> {
 
 
 
-// --- PANTALLA DE MAPA COMPLETO ---
+// Pantalla de Mapa Completo
 class FullMapScreen extends StatelessWidget {
   final LatLng location;
   final double radius;

@@ -4,9 +4,11 @@ import 'package:latlong2/latlong.dart';
 import '../utils/description_field.dart';
 import 'osm_map_picker.dart';
 import 'package:proyecto_ing_sw_10/utils/logic.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class CreateLostObjectReportPage extends StatefulWidget {
-    final User currentUser;
+  final User currentUser;
   
   const CreateLostObjectReportPage({super.key, required this.currentUser});
 
@@ -15,6 +17,18 @@ class CreateLostObjectReportPage extends StatefulWidget {
 }
 
 class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage> {
+  File? _selectedImage;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _ubicationController = TextEditingController();
@@ -31,18 +45,57 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
       appBar: AppBar(
         backgroundColor: Colors.blue,
         foregroundColor: Colors.black,
-        title: const Text("Formulario Reporte Objeto Perdido",
-            style: TextStyle(fontWeight: FontWeight.w500)),
+        title: const Text(
+          "Formulario Reporte Objeto Perdido",
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 10),
+
             const Padding(
               padding: EdgeInsets.all(8),
-              child: Text("Información del reporte",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
+              child: Text(
+                "Información del reporte",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+              ),
             ),
+
+            // Subir imagen (opcional)
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Container(
+                width: 300,
+                height: 300,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: (_selectedImage != null)
+                    ? Image.file(
+                  _selectedImage!,
+                  fit: BoxFit.cover,
+                )
+                    : const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.image_not_supported, size: 50, color: Colors.grey),
+                    Text("Sin imagen (Opcional)", style: TextStyle(color: Colors.grey)),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: ElevatedButton.icon(
+                onPressed: _pickImage,
+                icon: const Icon(Icons.image),
+                label: const Text("Seleccionar imagen"),
+              ),
+            ),
+
             Padding(
               padding: const EdgeInsets.all(8),
               child: TextField(
@@ -55,6 +108,7 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
                 ),
               ),
             ),
+
             // Descripción del Objeto
             DescriptionField(controller: _descriptionController),
 
@@ -242,7 +296,6 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
                       object: LostObject(
                         id: "obj-${DateTime.now().millisecondsSinceEpoch}",
                         name: _titleController.text,
-                        imageUrl: "",
                         dateLost: pickedDate ?? DateTime.now(),
                       ),
                       title: _titleController.text,
@@ -257,6 +310,7 @@ class _CreateLostObjectReportPageState extends State<CreateLostObjectReportPage>
                       userPhone: _userPhoneController.text,
                       userId: widget.currentUser.id,
                       reportState: ReportState.Pending,
+                      image: _selectedImage,
                     );
                     ReportManager.addReport(newReport);
                     print("Reporte creado: $newReport");

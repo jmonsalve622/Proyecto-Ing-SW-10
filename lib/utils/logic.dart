@@ -1,3 +1,5 @@
+import 'dart:io';
+
 //Clase Usuario, por ahora solo contiene los atributos basicos: id, nombre y correo
 class User {
   final String id;
@@ -33,13 +35,11 @@ class Admin extends User {
 class LostObject {
   final String id;
   final String name;
-  final String imageUrl;
   final DateTime dateLost;
 
   LostObject({
     required this.id,
     required this.name,
-    required this.imageUrl,
     required this.dateLost,
   });
 }
@@ -64,6 +64,7 @@ class Report {
   final String userPhone;
   final ObjectState initialState;
   ReportState reportState;
+  File? image;
 
   Report({
     required this.id,
@@ -80,7 +81,8 @@ class Report {
     required this.userEmail,
     required this.userPhone,
     required this.initialState,
-    required this.reportState
+    required this.reportState,
+    this.image,
   });
 
     @override
